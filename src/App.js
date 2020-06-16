@@ -5,6 +5,7 @@ import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_b
 import AnnotationRedact from './assets/icons/ic_annotation_add_redact_black_24px.svg'
 import AnnotationApplyRedact from './assets/icons/ic_annotation_apply_redact_black_24px.svg'
 import Select from './assets/icons/ic_select_black_24px.svg'
+import Search from './assets/icons/ic_search_black_24px.svg'
 import './App.css';
 
 const App = () => {
@@ -81,8 +82,10 @@ const App = () => {
         <button onClick={selectTool}>
           <img src={Select} alt="Select"/>
         </button>
-        {/* <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
-        <button onClick={performSearch}>Search</button> */}
+        {/* <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>*/}
+        <button onClick={performSearch}>
+          <img src={Search} alt="Search"/>
+        </button>
       </div>
       <div id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
