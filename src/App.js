@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import ZoomIn from './assets/icons/ic_zoom_in_black_24px.svg'
+import ZoomOut from './assets/icons/ic_zoom_out_black_24px.svg'
 import './App.css';
 
 const App = () => {
@@ -61,8 +63,8 @@ const App = () => {
   return (
     <div className="App">
       <div>
-        <button onClick={zoomOut}>Zoom out</button>
-        <button onClick={zoomIn}>Zoom in</button>
+        <button onClick={zoomOut}><img src={ZoomOut}/></button>
+        <button onClick={zoomIn}><img src={ZoomIn}/></button>
         <button onClick={createRectangle}>Rectangle</button>
         <button onClick={createRedaction}>Redact</button>
         <button onClick={applyRedactions}>Apply Redactions</button>
