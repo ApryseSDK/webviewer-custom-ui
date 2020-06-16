@@ -67,14 +67,20 @@ const App = () => {
   return (
     <div className="App">
       <div>
-        <button onClick={zoomOut}><img src={ZoomOut}/></button>
-        <button onClick={zoomIn}><img src={ZoomIn}/></button>
+        <button onClick={zoomOut}><img src={ZoomOut} alt="Zoom Out"/></button>
+        <button onClick={zoomIn}><img src={ZoomIn} alt="Zoom In"/></button>
         <button onClick={createRectangle}>
-          <img src={AnnotationRectangle}/>
+          <img src={AnnotationRectangle} alt="Create Rectangle"/>
         </button>
-        <button onClick={createRedaction}><img src={AnnotationRedact}/></button>
-        <button onClick={applyRedactions}><img src={AnnotationApplyRedact}/></button>
-        <button onClick={selectTool}><img src={Select}/></button>
+        <button onClick={createRedaction}>
+          <img src={AnnotationRedact} alt="Create Redaction"/>
+        </button>
+        <button onClick={applyRedactions}>
+          <img src={AnnotationApplyRedact} alt="Apply Redaction"/>
+        </button>
+        <button onClick={selectTool}>
+          <img src={Select} alt="Select"/>
+        </button>
         {/* <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
         <button onClick={performSearch}>Search</button> */}
       </div>
