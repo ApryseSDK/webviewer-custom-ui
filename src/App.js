@@ -62,7 +62,18 @@ const App = () => {
   };
 
   const performSearch = () => {
-
+    const {
+      current: {
+        value: textToSearch
+      }
+    } = searchTerm;
+    /**
+     * @todo Implement the API calls from
+     * CoreControls.DocumentViewer.textSearchInit
+     *
+     * https://www.pdftron.com/api/web/CoreControls.DocumentViewer.html#textSearchInit__anchor
+     */
+    console.log(`Text to search: ${textToSearch}`);
   };
 
   return (
@@ -82,7 +93,7 @@ const App = () => {
         <button onClick={selectTool}>
           <img src={Select} alt="Select"/>
         </button>
-        {/* <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>*/}
+        <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
         <button onClick={performSearch}>
           <img src={Search} alt="Search"/>
         </button>
