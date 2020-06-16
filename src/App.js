@@ -3,6 +3,8 @@ import ZoomIn from './assets/icons/ic_zoom_in_black_24px.svg'
 import ZoomOut from './assets/icons/ic_zoom_out_black_24px.svg'
 import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_black_24px.svg'
 import AnnotationRedact from './assets/icons/ic_annotation_add_redact_black_24px.svg'
+import AnnotationApplyRedact from './assets/icons/ic_annotation_apply_redact_black_24px.svg'
+import Select from './assets/icons/ic_select_black_24px.svg'
 import './App.css';
 
 const App = () => {
@@ -71,8 +73,8 @@ const App = () => {
           <img src={AnnotationRectangle}/>
         </button>
         <button onClick={createRedaction}><img src={AnnotationRedact}/></button>
-        <button onClick={applyRedactions}>Apply Redactions</button>
-        <button onClick={selectTool}>Select</button>
+        <button onClick={applyRedactions}><img src={AnnotationApplyRedact}/></button>
+        <button onClick={selectTool}><img src={Select}/></button>
         {/* <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
         <button onClick={performSearch}>Search</button> */}
       </div>
