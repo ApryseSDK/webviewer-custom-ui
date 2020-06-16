@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import Header from './components/Header';
 import './App.css';
 
 const App = () => {
   const viewer = useRef(null);
   const scrollView = useRef(null);
+  const searchTerm = useRef(null);
+
   const [docViewer, setDocViewer] = useState(null);
 
   // if using a class, equivalent of componentDidMount
@@ -19,10 +20,8 @@ const App = () => {
     docViewer.setOptions({ enableAnnotations: true });
     docViewer.loadDocument('/files/pdftron_about.pdf');
 
-    console.log(docViewer);
-
     setDocViewer(docViewer);
-
+  
     docViewer.on('documentLoaded', () => {
       console.log('document loaded');
       docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
@@ -55,6 +54,10 @@ const App = () => {
     await annotManager.applyRedactions();
   };
 
+  const performSearch = () => {
+
+  };
+
   return (
     <div className="App">
       <div>
@@ -64,6 +67,8 @@ const App = () => {
         <button onClick={createRedaction}>Redact</button>
         <button onClick={applyRedactions}>Apply Redactions</button>
         <button onClick={selectTool}>Select</button>
+        {/* <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
+        <button onClick={performSearch}>Search</button> */}
       </div>
       <div id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
