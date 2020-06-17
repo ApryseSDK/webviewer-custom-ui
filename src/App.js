@@ -62,6 +62,8 @@ const App = () => {
   };
 
   const performSearch = () => {
+    const annotManager = docViewer.getAnnotationManager();
+    const Annotations = window.Annotations;
     const {
       current: {
         value: textToSearch
@@ -79,12 +81,20 @@ const App = () => {
       const {
         resultCode,
         quads,
+        // The page number in the callback parameter is 0-indexed
+        page_num: zeroIndexedPageNum,
       } = result;
+      // The page number in Annotations.TextHighlightAnnotation is not 0-indexed
+      const pageNumber = zeroIndexedPageNum + 1;
       const {
         e_found: eFound,
       } = window.PDFNet.TextSearch.ResultCode
       if (resultCode === eFound) {
-        const textQuad = quads[0].getPoints();
+        const highlight = new Annotations.TextHighlightAnnotation();
+        highlight.PageNumber = pageNumber;
+        highlight.Quads.push(quads[0].getPoints());
+        annotManager.addAnnotation(highlight);
+        annotManager.drawAnnotations(highlight.PageNumber);
       }
     });
   };
