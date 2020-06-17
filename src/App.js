@@ -76,25 +76,28 @@ const App = () => {
       },
     } = docViewer;
     const mode = ePageStop | eHighlight;
-    const isFullSearch = false;
-    docViewer.textSearchInit(textToSearch, mode, isFullSearch, result => {
-      const {
-        resultCode,
-        quads,
-        // The page number in the callback parameter is 0-indexed
-        page_num: zeroIndexedPageNum,
-      } = result;
-      // The page number in Annotations.TextHighlightAnnotation is not 0-indexed
-      const pageNumber = zeroIndexedPageNum + 1;
-      const {
-        e_found: eFound,
-      } = window.PDFNet.TextSearch.ResultCode
-      if (resultCode === eFound) {
-        const highlight = new Annotations.TextHighlightAnnotation();
-        highlight.PageNumber = pageNumber;
-        highlight.Quads.push(quads[0].getPoints());
-        annotManager.addAnnotation(highlight);
-        annotManager.drawAnnotations(highlight.PageNumber);
+    const fullSearch = false;
+    docViewer.textSearchInit(textToSearch, mode, {
+      fullSearch,
+      onResult: result => {
+        const {
+          resultCode,
+          quads,
+          // The page number in the callback parameter is 0-indexed
+          page_num: zeroIndexedPageNum,
+        } = result;
+        // The page number in Annotations.TextHighlightAnnotation is not 0-indexed
+        const pageNumber = zeroIndexedPageNum + 1;
+        const {
+          e_found: eFound,
+        } = window.PDFNet.TextSearch.ResultCode
+        if (resultCode === eFound) {
+          const highlight = new Annotations.TextHighlightAnnotation();
+          highlight.PageNumber = pageNumber;
+          highlight.Quads.push(quads[0].getPoints());
+          annotManager.addAnnotation(highlight);
+          annotManager.drawAnnotations(highlight.PageNumber);
+        }
       }
     });
   };
