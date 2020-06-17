@@ -67,13 +67,27 @@ const App = () => {
         value: textToSearch
       }
     } = searchTerm;
-    /**
-     * @todo Implement the API calls from
-     * CoreControls.DocumentViewer.textSearchInit
-     *
-     * https://www.pdftron.com/api/web/CoreControls.DocumentViewer.html#textSearchInit__anchor
-     */
-    console.log(`Text to search: ${textToSearch}`);
+    const {
+      SearchMode: {
+        e_page_stop: ePageStop,
+        e_highlight: eHighlight,
+      },
+    } = docViewer;
+    const mode = ePageStop | eHighlight;
+    const isFullSearch = false;
+    docViewer.textSearchInit(textToSearch, mode, isFullSearch, result => {
+      const {
+        // resultCode,
+        quads,
+      } = result;
+      /**
+       * @todo Replace with `resultCode === ResultCode.e_found`
+       * https://www.pdftron.com/api/web/PDFNet.TextSearch.html#.ResultCode__anchor
+       */
+      if (quads.length && quads[0].getPoints) {
+        const textQuad = quads[0].getPoints();
+      }
+    });
   };
 
   return (
