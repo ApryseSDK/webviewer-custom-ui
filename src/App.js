@@ -91,7 +91,10 @@ const App = () => {
         } = window.PDFNet.TextSearch.ResultCode
         if (resultCode === eFound) {
           const highlight = new Annotations.TextHighlightAnnotation();
-          // The page number in Annotations.TextHighlightAnnotation is not 0-indexed
+          /**
+           * The page number in Annotations.TextHighlightAnnotation is not
+           * 0-indexed
+           */
           highlight.PageNumber = zeroIndexedPageNum + 1;
           highlight.Quads.push(quads[0].getPoints());
           annotManager.addAnnotation(highlight);
