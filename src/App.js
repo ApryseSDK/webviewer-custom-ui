@@ -77,14 +77,13 @@ const App = () => {
     const isFullSearch = false;
     docViewer.textSearchInit(textToSearch, mode, isFullSearch, result => {
       const {
-        // resultCode,
+        resultCode,
         quads,
       } = result;
-      /**
-       * @todo Replace with `resultCode === ResultCode.e_found`
-       * https://www.pdftron.com/api/web/PDFNet.TextSearch.html#.ResultCode__anchor
-       */
-      if (quads.length && quads[0].getPoints) {
+      const {
+        e_found: eFound,
+      } = window.PDFNet.TextSearch.ResultCode
+      if (resultCode === eFound) {
         const textQuad = quads[0].getPoints();
       }
     });
