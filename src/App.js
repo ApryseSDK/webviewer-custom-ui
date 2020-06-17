@@ -99,6 +99,14 @@ const App = () => {
           highlight.Quads.push(quads[0].getPoints());
           annotManager.addAnnotation(highlight);
           annotManager.drawAnnotations(highlight.PageNumber);
+          docViewer.displaySearchResult(result, () => {
+            /**
+             * @todo Figure out why `displayPageLocation` does not bring the
+             * view to correct page (i.e. Searching `You` does not bring the
+             * view to the second page of the document)
+             */
+            docViewer.displayPageLocation(zeroIndexedPageNum, 0, 0, true);
+          });
         }
       }
     });
