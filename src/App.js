@@ -86,14 +86,13 @@ const App = () => {
           // The page number in the callback parameter is 0-indexed
           page_num: zeroIndexedPageNum,
         } = result;
-        // The page number in Annotations.TextHighlightAnnotation is not 0-indexed
-        const pageNumber = zeroIndexedPageNum + 1;
         const {
           e_found: eFound,
         } = window.PDFNet.TextSearch.ResultCode
         if (resultCode === eFound) {
           const highlight = new Annotations.TextHighlightAnnotation();
-          highlight.PageNumber = pageNumber;
+          // The page number in Annotations.TextHighlightAnnotation is not 0-indexed
+          highlight.PageNumber = zeroIndexedPageNum + 1;
           highlight.Quads.push(quads[0].getPoints());
           annotManager.addAnnotation(highlight);
           annotManager.drawAnnotations(highlight.PageNumber);
