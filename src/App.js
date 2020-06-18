@@ -76,7 +76,8 @@ const App = () => {
       },
     } = docViewer;
     const mode = ePageStop | eHighlight;
-    const fullSearch = false;
+    const fullSearch = true;
+    let jumped = false;
     docViewer.textSearchInit(textToSearch, mode, {
       fullSearch,
       onResult: result => {
@@ -100,13 +101,16 @@ const App = () => {
           highlight.Quads.push(quads[0].getPoints());
           annotManager.addAnnotation(highlight);
           annotManager.drawAnnotations(highlight.PageNumber);
-          docViewer.displaySearchResult(result, () => {
-            /**
-             * The page number in docViewer.displayPageLocation is not
-             * 0-indexed
-             */
-            docViewer.displayPageLocation(pageNumber, 0, 0, true);
-          });
+          if (!jumped) {
+            jumped = true;
+            docViewer.displaySearchResult(result, () => {
+              /**
+               * The page number in docViewer.displayPageLocation is not
+               * 0-indexed
+               */
+              docViewer.displayPageLocation(pageNumber, 0, 0, true);
+            });
+          }
         }
       }
     });
