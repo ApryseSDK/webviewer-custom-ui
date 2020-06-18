@@ -5,6 +5,8 @@ import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_b
 import AnnotationRedact from './assets/icons/ic_annotation_add_redact_black_24px.svg'
 import AnnotationApplyRedact from './assets/icons/ic_annotation_apply_redact_black_24px.svg'
 import ClearSearch from './assets/icons/ic_close_black_24px.svg'
+import LeftChevronArrow from './assets/icons/ic_chevron_left_black_24px.svg'
+import RightChevronArrow from './assets/icons/ic_chevron_right_black_24px.svg'
 import Select from './assets/icons/ic_select_black_24px.svg'
 import Search from './assets/icons/ic_search_black_24px.svg'
 import './App.css';
@@ -16,6 +18,8 @@ const App = () => {
 
   const [docViewer, setDocViewer] = useState(null);
   const [annotManager, setAnnotManager] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [activeResultIndex, setActiveResult] = useState(-1);
 
   const Annotations = window.Annotations;
 
@@ -84,6 +88,7 @@ const App = () => {
     docViewer.textSearchInit(textToSearch, mode, {
       fullSearch,
       onResult: result => {
+        setSearchResults(prevState => [...prevState, result]);
         const {
           resultCode,
           quads,
@@ -106,6 +111,8 @@ const App = () => {
           annotManager.drawAnnotations(highlight.PageNumber);
           if (!jumped) {
             jumped = true;
+            // This is the first result found, so set `activeResult` accordingly
+            setActiveResult(0);
             docViewer.displaySearchResult(result, () => {
               /**
                * The page number in docViewer.displayPageLocation is not
@@ -127,6 +134,8 @@ const App = () => {
     searchTerm.current.value = '';
     docViewer.clearSearchResults();
     annotManager.deleteAnnotations(annotManager.getAnnotationsList());
+    setSearchResults([]);
+    setActiveResult(-1);
   };
 
   /**
@@ -149,6 +158,36 @@ const App = () => {
       performSearch();
     }
   };
+
+  /**
+   * Changes the active search result in `docViewer`
+   *
+   * @param {Number} newSearchResult The index to set `activeResult` to,
+   * indicating which `result` object that should be passed to
+   * `docViewer.setActiveSearchResult`
+   */
+  const changeActiveSearchResult = async (newSearchResult) => {
+    /**
+     * @todo Figure out why only the middle set of search results can be
+     * iterated through, but not the first or last results.
+     */
+    /**
+     * Do not try to set a search result that is outside of the index range of
+     * searchResults
+     */
+    if (newSearchResult > 0 && newSearchResult < searchResults.length) {
+      await setActiveResult(newSearchResult);
+      docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
+    }
+  };
+
+  const prevSearchResult = () => {
+    changeActiveSearchResult(activeResultIndex - 1);
+  }
+
+  const nextSearchResult = () => {
+    changeActiveSearchResult(activeResultIndex + 1);
+  }
 
   return (
     <div className="App">
@@ -175,6 +214,18 @@ const App = () => {
         ></input>
         <button onClick={performSearch}>
           <img src={Search} alt="Search"/>
+        </button>
+        <button
+          onClick={prevSearchResult}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={LeftChevronArrow} alt="Previous Search Result"/>
+        </button>
+        <button
+          onClick={nextSearchResult}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={RightChevronArrow} alt="Next Search Result"/>
         </button>
         <button onClick={clearSearchResults}>
           <img src={ClearSearch} alt="Clear Search"/>
