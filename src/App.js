@@ -129,6 +129,27 @@ const App = () => {
     annotManager.deleteAnnotations(annotManager.getAnnotationsList());
   };
 
+  /**
+   * Checks if the key that has been released was the `Enter` key, and invokes
+   * `performSearch` if so
+   *
+   * @param {SyntheticEvent} event The event passed from the `input` element
+   * upon the function being invoked from a listener attribute, such as
+   * `onKeyUp`
+   */
+  const listenForEnter = (event) => {
+    const {
+      keyCode,
+    } = event;
+    // The key code for the enter button
+    if (keyCode === 13) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      performSearch();
+    }
+  };
+
   return (
     <div className="App">
       <div>
@@ -146,7 +167,12 @@ const App = () => {
         <button onClick={selectTool}>
           <img src={Select} alt="Select"/>
         </button>
-        <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
+        <input
+          ref={searchTerm}
+          type={'text'}
+          placeholder={'Search'}
+          onKeyUp={listenForEnter}
+        ></input>
         <button onClick={performSearch}>
           <img src={Search} alt="Search"/>
         </button>
