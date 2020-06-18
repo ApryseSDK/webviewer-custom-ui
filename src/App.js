@@ -80,6 +80,7 @@ const App = () => {
   };
 
   const performSearch = () => {
+    clearSearchResults(false);
     const {
       current: {
         value: textToSearch
@@ -138,9 +139,16 @@ const App = () => {
   /**
    * Side-effect function that invokes the internal functions to clear the
    * search results
+   *
+   * @param {Boolean} clearSearchTermValue For the guard clause to determine
+   * if `searchTerm.current.value` should be mutated (would not want this to
+   * occur in the case where a subsequent search is being performed after a
+   * previous search)
    */
-  const clearSearchResults = () => {
-    searchTerm.current.value = '';
+  const clearSearchResults = (clearSearchTermValue = true) => {
+    if (clearSearchTermValue) {
+      searchTerm.current.value = '';
+    }
     docViewer.clearSearchResults();
     annotManager.deleteAnnotations(annotManager.getAnnotationsList());
     setSearchResults([]);
