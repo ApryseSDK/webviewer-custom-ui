@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import SearchContainer from './components/SearchContainer';
 import ZoomIn from './assets/icons/ic_zoom_in_black_24px.svg'
 import ZoomOut from './assets/icons/ic_zoom_out_black_24px.svg'
 import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_black_24px.svg'
@@ -20,6 +21,7 @@ const App = () => {
   const [annotManager, setAnnotManager] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [activeResultIndex, setActiveResultIndex] = useState(-1);
+  const [searchContainerOpen, setSearchContainerOpen] = useState(false);
 
   const Annotations = window.Annotations;
 
@@ -238,7 +240,20 @@ const App = () => {
         <button onClick={clearSearchResults}>
           <img src={ClearSearch} alt="Clear Search"/>
         </button>
+        <button
+          onClick={
+            () => {
+              // Flip the boolean
+              setSearchContainerOpen(prevState => !prevState);
+            }
+          }
+        >
+          Open
+        </button>
       </div>
+      <SearchContainer
+        open={searchContainerOpen}
+      />
       <div id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
       </div>
