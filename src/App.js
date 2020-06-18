@@ -16,6 +16,7 @@ const App = () => {
   const viewer = useRef(null);
   const scrollView = useRef(null);
   const searchTerm = useRef(null);
+  const searchContainerRef = useRef(null);
 
   const [docViewer, setDocViewer] = useState(null);
   const [annotManager, setAnnotManager] = useState(null);
@@ -54,6 +55,46 @@ const App = () => {
       docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
     }
   }, [ activeResultIndex ]);
+
+  useEffect(() => {
+    /**
+     * @todo Add the correct `style` mutations so that `SearchContainer`
+     * renders to the right of the `div#scroll-view` element
+     */
+    /*
+    if (searchContainerOpen) {
+      Object.assign(
+        scrollView.current.style,
+        {
+          width: '80%',
+        },
+      );
+      if (searchContainerRef && searchContainerRef.current) {
+        Object.assign(
+          searchContainerRef.current.style,
+          {
+            width: '20%',
+          },
+        );
+      }
+    } else {
+      Object.assign(
+        scrollView.current.style,
+        {
+          width: '100%',
+        },
+      );
+      if (searchContainerRef && searchContainerRef.current) {
+        Object.assign(
+          searchContainerRef.current.style,
+          {
+            width: '0%',
+          },
+        );
+      }
+    }
+    */
+  }, [ searchContainerOpen ])
 
   const zoomOut = () => {
     docViewer.zoomTo(docViewer.getZoom() - 0.25);
@@ -252,6 +293,7 @@ const App = () => {
         </button>
       </div>
       <SearchContainer
+        searchContainerRef={searchContainerRef}
         open={searchContainerOpen}
       />
       <div id="scroll-view" ref={scrollView}>

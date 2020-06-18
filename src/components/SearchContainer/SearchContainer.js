@@ -3,6 +3,7 @@ import React from 'react';
 const SearchContainer = (props) => {
   const {
     open = false,
+    searchContainerRef,
   } = props;
 
   if (!open) {
@@ -10,7 +11,11 @@ const SearchContainer = (props) => {
   }
 
   return (
-    <div>Hello World</div>
+    <div
+      ref={searchContainerRef}
+    >
+      Hello World
+    </div>
   );
 };
 
