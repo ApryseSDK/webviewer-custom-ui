@@ -19,7 +19,7 @@ const App = () => {
   const [docViewer, setDocViewer] = useState(null);
   const [annotManager, setAnnotManager] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
-  const [activeResultIndex, setActiveResult] = useState(-1);
+  const [activeResultIndex, setActiveResultIndex] = useState(-1);
 
   const Annotations = window.Annotations;
 
@@ -121,7 +121,7 @@ const App = () => {
           if (!jumped) {
             jumped = true;
             // This is the first result found, so set `activeResult` accordingly
-            setActiveResult(0);
+            setActiveResultIndex(0);
             docViewer.displaySearchResult(result, () => {
               /**
                * The page number in docViewer.displayPageLocation is not
@@ -144,7 +144,7 @@ const App = () => {
     docViewer.clearSearchResults();
     annotManager.deleteAnnotations(annotManager.getAnnotationsList());
     setSearchResults([]);
-    setActiveResult(-1);
+    setActiveResultIndex(-1);
   };
 
   /**
@@ -185,7 +185,7 @@ const App = () => {
      * searchResults
      */
     if (newSearchResult >= 0 && newSearchResult < searchResults.length) {
-      setActiveResult(newSearchResult);
+      setActiveResultIndex(newSearchResult);
     }
   };
 
