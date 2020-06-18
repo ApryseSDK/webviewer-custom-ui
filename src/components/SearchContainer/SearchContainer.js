@@ -7,6 +7,8 @@ import Search from '../../assets/icons/ic_search_black_24px.svg'
 const SearchContainer = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [activeResultIndex, setActiveResultIndex] = useState(-1);
+  const [toggledSearchModes, setToggledSearchModes] = useState([]);
+  const [searchModes, setSearchModes] = useState({});
 
   const {
     Annotations,
@@ -16,6 +18,25 @@ const SearchContainer = (props) => {
     searchContainerRef,
     searchTermRef: searchTerm,
   } = props;
+
+  useEffect(() => {
+    if (docViewer && docViewer.SearchMode) {
+      const {
+        SearchMode: {
+          e_page_stop: ePageStop,
+          e_highlight: eHighlight,
+          e_case_sensitive: eCaseSensitive,
+          e_whole_word: eWholeWord,
+        },
+      } = docViewer;
+      setSearchModes({
+        ePageStop,
+        eHighlight,
+        eCaseSensitive,
+        eWholeWord,
+      });
+    }
+  }, [ docViewer ]);
 
   /**
    * Coupled with the function `changeActiveSearchResult`
@@ -34,12 +55,13 @@ const SearchContainer = (props) => {
       }
     } = searchTerm;
     const {
-      SearchMode: {
-        e_page_stop: ePageStop,
-        e_highlight: eHighlight,
-      },
-    } = docViewer;
-    const mode = ePageStop | eHighlight;
+      ePageStop,
+      eHighlight,
+    } = searchModes;
+    const mode = toggledSearchModes.reduce(
+      (prev, value) => prev | value,
+      (ePageStop | eHighlight),
+    );
     const fullSearch = true;
     let jumped = false;
     docViewer.textSearchInit(textToSearch, mode, {
@@ -152,6 +174,44 @@ const SearchContainer = (props) => {
     changeActiveSearchResult(activeResultIndex + 1);
   }
 
+  /**
+   * Toggles the given `searchMode` value within `toggledSearchModes`
+   *
+   * @param {CoreControls.DocumentViewer.SearchMode} searchMode The bitwise
+   * search mode value to toggle on or off
+   */
+  const toggleSearchMode = (searchMode) => {
+    if (!toggledSearchModes.includes(searchMode)) {
+      setToggledSearchModes(prevState => [...prevState, searchMode])
+    } else {
+      setToggledSearchModes(
+        prevState => prevState.filter(value => value !== searchMode)
+      )
+    }
+  }
+
+  /**
+   * Side-effect function that toggles whether or not to perform a text search
+   * with case sensitivty
+   */
+  const toggleCaseSensitive = () => {
+    const {
+      eCaseSensitive,
+    } = searchModes;
+    toggleSearchMode(eCaseSensitive);
+  }
+
+  /**
+   * Side-effect function that toggles whether or not to perform a text search
+   * that finds the whole word
+   */
+  const toggleWholeWord = () => {
+    const {
+      eWholeWord,
+    } = searchModes;
+    toggleSearchMode(eWholeWord);
+  }
+
   if (!open) {
     return (null);
   }
@@ -184,6 +244,22 @@ const SearchContainer = (props) => {
       <button onClick={clearSearchResults}>
         <img src={ClearSearch} alt="Clear Search"/>
       </button>
+      <span>
+        <input
+          type="checkbox"
+          value={toggledSearchModes.includes(searchModes.eCaseSensitive)}
+          onChange={toggleCaseSensitive}
+        />
+        Case sensitive
+      </span>
+      <span>
+        <input
+          type="checkbox"
+          value={toggledSearchModes.includes(searchModes.eWholeWord)}
+          onChange={toggleWholeWord}
+        />
+        Whole word
+      </span>
     </div>
   );
 };
