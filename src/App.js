@@ -89,23 +89,23 @@ const App = () => {
         const {
           e_found: eFound,
         } = window.PDFNet.TextSearch.ResultCode
+        const pageNumber = zeroIndexedPageNum + 1;
         if (resultCode === eFound) {
           const highlight = new Annotations.TextHighlightAnnotation();
           /**
            * The page number in Annotations.TextHighlightAnnotation is not
            * 0-indexed
            */
-          highlight.PageNumber = zeroIndexedPageNum + 1;
+          highlight.PageNumber = pageNumber;
           highlight.Quads.push(quads[0].getPoints());
           annotManager.addAnnotation(highlight);
           annotManager.drawAnnotations(highlight.PageNumber);
           docViewer.displaySearchResult(result, () => {
             /**
-             * @todo Figure out why `displayPageLocation` does not bring the
-             * view to correct page (i.e. Searching `You` does not bring the
-             * view to the second page of the document)
+             * The page number in docViewer.displayPageLocation is not
+             * 0-indexed
              */
-            docViewer.displayPageLocation(zeroIndexedPageNum, 0, 0, true);
+            docViewer.displayPageLocation(pageNumber, 0, 0, true);
           });
         }
       }
