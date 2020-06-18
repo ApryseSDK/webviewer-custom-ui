@@ -175,7 +175,7 @@ const App = () => {
      * Do not try to set a search result that is outside of the index range of
      * searchResults
      */
-    if (newSearchResult > 0 && newSearchResult < searchResults.length) {
+    if (newSearchResult >= 0 && newSearchResult < searchResults.length) {
       await setActiveResult(newSearchResult);
       docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
     }
