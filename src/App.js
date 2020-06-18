@@ -14,6 +14,9 @@ const App = () => {
   const searchTerm = useRef(null);
 
   const [docViewer, setDocViewer] = useState(null);
+  const [annotManager, setAnnotManager] = useState(null);
+
+  const Annotations = window.Annotations;
 
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
@@ -32,6 +35,7 @@ const App = () => {
     docViewer.on('documentLoaded', () => {
       console.log('document loaded');
       docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
+      setAnnotManager(docViewer.getAnnotationManager());
     });
   }, []);
 
@@ -62,8 +66,6 @@ const App = () => {
   };
 
   const performSearch = () => {
-    const annotManager = docViewer.getAnnotationManager();
-    const Annotations = window.Annotations;
     const {
       current: {
         value: textToSearch
