@@ -4,6 +4,7 @@ import ZoomOut from './assets/icons/ic_zoom_out_black_24px.svg'
 import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_black_24px.svg'
 import AnnotationRedact from './assets/icons/ic_annotation_add_redact_black_24px.svg'
 import AnnotationApplyRedact from './assets/icons/ic_annotation_apply_redact_black_24px.svg'
+import ClearSearch from './assets/icons/ic_close_black_24px.svg'
 import Select from './assets/icons/ic_select_black_24px.svg'
 import Search from './assets/icons/ic_search_black_24px.svg'
 import './App.css';
@@ -118,6 +119,16 @@ const App = () => {
     });
   };
 
+  /**
+   * Side-effect function that invokes the internal functions to clear the
+   * search results
+   */
+  const clearSearchResults = () => {
+    searchTerm.current.value = '';
+    docViewer.clearSearchResults();
+    annotManager.deleteAnnotations(annotManager.getAnnotationsList());
+  };
+
   return (
     <div className="App">
       <div>
@@ -138,6 +149,9 @@ const App = () => {
         <input ref={searchTerm} type={'text'} placeholder={'Search'}></input>
         <button onClick={performSearch}>
           <img src={Search} alt="Search"/>
+        </button>
+        <button onClick={clearSearchResults}>
+          <img src={ClearSearch} alt="Clear Search"/>
         </button>
       </div>
       <div id="scroll-view" ref={scrollView}>
