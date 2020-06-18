@@ -101,7 +101,7 @@ const App = () => {
            * The page number in Annotations.TextHighlightAnnotation is not
            * 0-indexed
            */
-          highlight.PageNumber = pageNumber;
+          highlight.setPageNumber(pageNumber);
           highlight.Quads.push(getPoints());
           annotManager.addAnnotation(highlight);
           annotManager.drawAnnotations(highlight.PageNumber);
