@@ -92,17 +92,12 @@ const App = () => {
         const pageNumber = zeroIndexedPageNum + 1;
         if (resultCode === eFound) {
           const highlight = new Annotations.TextHighlightAnnotation();
-          const {
-            getPoints,
-          } = quads[0];
-          // The function loses its object binding upon being de-structured
-          getPoints.bind(quads[0]);
           /**
            * The page number in Annotations.TextHighlightAnnotation is not
            * 0-indexed
            */
           highlight.setPageNumber(pageNumber);
-          highlight.Quads.push(getPoints());
+          highlight.Quads.push(quads[0].getPoints());
           annotManager.addAnnotation(highlight);
           annotManager.drawAnnotations(highlight.PageNumber);
           docViewer.displaySearchResult(result, () => {
