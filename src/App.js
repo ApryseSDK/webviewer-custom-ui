@@ -44,6 +44,15 @@ const App = () => {
     });
   }, []);
 
+  /**
+   * Coupled with the function `changeActiveSearchResult`
+   */
+  useEffect(() => {
+    if (activeResultIndex && activeResultIndex >= 0) {
+      docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
+    }
+  }, [ activeResultIndex ]);
+
   const zoomOut = () => {
     docViewer.zoomTo(docViewer.getZoom() - 0.25);
   };
@@ -166,7 +175,7 @@ const App = () => {
    * indicating which `result` object that should be passed to
    * `docViewer.setActiveSearchResult`
    */
-  const changeActiveSearchResult = async (newSearchResult) => {
+  const changeActiveSearchResult = (newSearchResult) => {
     /**
      * @todo Figure out why only the middle set of search results can be
      * iterated through, but not the first or last results.
@@ -176,8 +185,7 @@ const App = () => {
      * searchResults
      */
     if (newSearchResult >= 0 && newSearchResult < searchResults.length) {
-      await setActiveResult(newSearchResult);
-      docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
+      setActiveResult(newSearchResult);
     }
   };
 
