@@ -28,6 +28,7 @@ const SearchContainer = (props) => {
           e_highlight: eHighlight,
           e_case_sensitive: eCaseSensitive,
           e_whole_word: eWholeWord,
+          e_ambient_string: eAmbientString,
         },
       } = docViewer;
       setSearchModes({
@@ -35,6 +36,7 @@ const SearchContainer = (props) => {
         eHighlight,
         eCaseSensitive,
         eWholeWord,
+        eAmbientString,
       });
     }
   }, [ docViewer ]);
@@ -63,10 +65,11 @@ const SearchContainer = (props) => {
     const {
       ePageStop,
       eHighlight,
+      eAmbientString,
     } = searchModes;
     const mode = toggledSearchModes.reduce(
       (prev, value) => prev | value,
-      (ePageStop | eHighlight),
+      (ePageStop | eHighlight | eAmbientString),
     );
     const fullSearch = true;
     let jumped = false;
