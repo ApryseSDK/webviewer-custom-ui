@@ -225,7 +225,7 @@ const SearchContainer = (props) => {
         type={'text'}
         placeholder={'Search'}
         onKeyUp={listenForEnter}
-      ></input>
+      />
       <button onClick={performSearch}>
         <img src={Search} alt="Search"/>
       </button>
