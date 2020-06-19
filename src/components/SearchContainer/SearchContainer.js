@@ -243,22 +243,24 @@ const SearchContainer = (props) => {
       <button onClick={clearSearchResults}>
         <img src={ClearSearch} alt="Clear Search"/>
       </button>
-      <span>
-        <input
-          type="checkbox"
-          value={toggledSearchModes.includes(searchModes.eCaseSensitive)}
-          onChange={toggleCaseSensitive}
-        />
-        Case sensitive
-      </span>
-      <span>
-        <input
-          type="checkbox"
-          value={toggledSearchModes.includes(searchModes.eWholeWord)}
-          onChange={toggleWholeWord}
-        />
-        Whole word
-      </span>
+      <div>
+        <span>
+          <input
+            type="checkbox"
+            value={toggledSearchModes.includes(searchModes.eCaseSensitive)}
+            onChange={toggleCaseSensitive}
+          />
+          Case sensitive
+        </span>
+        <span>
+          <input
+            type="checkbox"
+            value={toggledSearchModes.includes(searchModes.eWholeWord)}
+            onChange={toggleWholeWord}
+          />
+          Whole word
+        </span>
+      </div>
     </span>
   );
 };
