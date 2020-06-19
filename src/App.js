@@ -200,7 +200,7 @@ const App = () => {
   };
 
   const prevSearchResult = () => {
-    if(activeResultIndex !== 0) {
+    if (activeResultIndex !== 0) {
       changeActiveSearchResult(activeResultIndex - 1);
     }
   }
