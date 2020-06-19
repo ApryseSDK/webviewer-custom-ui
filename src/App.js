@@ -1,25 +1,23 @@
 import React, { useRef, useEffect, useState } from 'react';
+import SearchContainer from './components/SearchContainer';
 import ZoomIn from './assets/icons/ic_zoom_in_black_24px.svg'
 import ZoomOut from './assets/icons/ic_zoom_out_black_24px.svg'
 import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_black_24px.svg'
 import AnnotationRedact from './assets/icons/ic_annotation_add_redact_black_24px.svg'
 import AnnotationApplyRedact from './assets/icons/ic_annotation_apply_redact_black_24px.svg'
-import ClearSearch from './assets/icons/ic_close_black_24px.svg'
-import LeftChevronArrow from './assets/icons/ic_chevron_left_black_24px.svg'
-import RightChevronArrow from './assets/icons/ic_chevron_right_black_24px.svg'
-import Select from './assets/icons/ic_select_black_24px.svg'
 import Search from './assets/icons/ic_search_black_24px.svg'
+import Select from './assets/icons/ic_select_black_24px.svg'
 import './App.css';
 
 const App = () => {
   const viewer = useRef(null);
   const scrollView = useRef(null);
   const searchTerm = useRef(null);
+  const searchContainerRef = useRef(null);
 
   const [docViewer, setDocViewer] = useState(null);
   const [annotManager, setAnnotManager] = useState(null);
-  const [searchResults, setSearchResults] = useState([]);
-  const [activeResultIndex, setActiveResultIndex] = useState(-1);
+  const [searchContainerOpen, setSearchContainerOpen] = useState(false);
 
   const Annotations = window.Annotations;
 
@@ -44,14 +42,45 @@ const App = () => {
     });
   }, []);
 
-  /**
-   * Coupled with the function `changeActiveSearchResult`
-   */
   useEffect(() => {
-    if (activeResultIndex >= 0 && activeResultIndex < searchResults.length) {
-      docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
+    /**
+     * @todo Add the correct `style` mutations so that `SearchContainer`
+     * renders to the right of the `div#scroll-view` element
+     */
+    /*
+    if (searchContainerOpen) {
+      Object.assign(
+        scrollView.current.style,
+        {
+          width: '80%',
+        },
+      );
+      if (searchContainerRef && searchContainerRef.current) {
+        Object.assign(
+          searchContainerRef.current.style,
+          {
+            width: '20%',
+          },
+        );
+      }
+    } else {
+      Object.assign(
+        scrollView.current.style,
+        {
+          width: '100%',
+        },
+      );
+      if (searchContainerRef && searchContainerRef.current) {
+        Object.assign(
+          searchContainerRef.current.style,
+          {
+            width: '0%',
+          },
+        );
+      }
     }
-  }, [ activeResultIndex ]);
+    */
+  }, [ searchContainerOpen ])
 
   const zoomOut = () => {
     docViewer.zoomTo(docViewer.getZoom() - 0.25);
@@ -79,6 +108,8 @@ const App = () => {
     await annotManager.applyRedactions();
   };
 
+<<<<<<< HEAD
+=======
   const performSearch = () => {
     clearSearchResults(false);
     const {
@@ -197,6 +228,7 @@ const App = () => {
     }
   };
 
+>>>>>>> master
   return (
     <div className="App">
       <div>
@@ -214,6 +246,15 @@ const App = () => {
         <button onClick={selectTool}>
           <img src={Select} alt="Select"/>
         </button>
+<<<<<<< HEAD
+        <button
+          onClick={
+            () => {
+              // Flip the boolean
+              setSearchContainerOpen(prevState => !prevState);
+            }
+          }
+=======
         <input
           ref={searchTerm}
           type={'text'}
@@ -232,13 +273,19 @@ const App = () => {
         <button
           onClick={() => { changeActiveSearchResult(activeResultIndex + 1) }}
           disabled={activeResultIndex < 0}
+>>>>>>> master
         >
-          <img src={RightChevronArrow} alt="Next Search Result"/>
-        </button>
-        <button onClick={clearSearchResults}>
-          <img src={ClearSearch} alt="Clear Search"/>
+          <img src={Search} alt="Search"/>
         </button>
       </div>
+      <SearchContainer
+        Annotations={Annotations}
+        annotManager={annotManager}
+        docViewer={docViewer}
+        searchTermRef={searchTerm}
+        searchContainerRef={searchContainerRef}
+        open={searchContainerOpen}
+      />
       <div id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
       </div>
