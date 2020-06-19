@@ -47,6 +47,11 @@ const SearchContainer = (props) => {
     }
   }, [ activeResultIndex ]);
 
+  /**
+   * Side-effect function that invokes `docViewer.textSearchInit`, and stores
+   * every result in the state Array `searchResults`, and jumps the user to the
+   * first result is found.
+   */
   const performSearch = () => {
     clearSearchResults(false);
     const {
