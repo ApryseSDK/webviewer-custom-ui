@@ -108,6 +108,127 @@ const App = () => {
     await annotManager.applyRedactions();
   };
 
+<<<<<<< HEAD
+=======
+  const performSearch = () => {
+    clearSearchResults(false);
+    const {
+      current: {
+        value: textToSearch
+      }
+    } = searchTerm;
+    const {
+      SearchMode: {
+        e_page_stop: ePageStop,
+        e_highlight: eHighlight,
+      },
+    } = docViewer;
+    const mode = ePageStop | eHighlight;
+    const fullSearch = true;
+    let jumped = false;
+    docViewer.textSearchInit(textToSearch, mode, {
+      fullSearch,
+      onResult: result => {
+        setSearchResults(prevState => [...prevState, result]);
+        const {
+          resultCode,
+          quads,
+          // The page number in the callback parameter is 0-indexed
+          page_num: zeroIndexedPageNum,
+        } = result;
+        const {
+          e_found: eFound,
+        } = window.PDFNet.TextSearch.ResultCode
+        const pageNumber = zeroIndexedPageNum + 1;
+        if (resultCode === eFound) {
+          const highlight = new Annotations.TextHighlightAnnotation();
+          /**
+           * The page number in Annotations.TextHighlightAnnotation is not
+           * 0-indexed
+           */
+          highlight.setPageNumber(pageNumber);
+          highlight.Quads.push(quads[0].getPoints());
+          annotManager.addAnnotation(highlight);
+          annotManager.drawAnnotations(highlight.PageNumber);
+          if (!jumped) {
+            jumped = true;
+            // This is the first result found, so set `activeResult` accordingly
+            setActiveResultIndex(0);
+            docViewer.displaySearchResult(result, () => {
+              /**
+               * The page number in docViewer.displayPageLocation is not
+               * 0-indexed
+               */
+              docViewer.displayPageLocation(pageNumber, 0, 0, true);
+            });
+          }
+        }
+      }
+    });
+  };
+
+  /**
+   * Side-effect function that invokes the internal functions to clear the
+   * search results
+   *
+   * @param {Boolean} clearSearchTermValue For the guard clause to determine
+   * if `searchTerm.current.value` should be mutated (would not want this to
+   * occur in the case where a subsequent search is being performed after a
+   * previous search)
+   */
+  const clearSearchResults = (clearSearchTermValue = true) => {
+    if (clearSearchTermValue) {
+      searchTerm.current.value = '';
+    }
+    docViewer.clearSearchResults();
+    annotManager.deleteAnnotations(annotManager.getAnnotationsList());
+    setSearchResults([]);
+    setActiveResultIndex(-1);
+  };
+
+  /**
+   * Checks if the key that has been released was the `Enter` key, and invokes
+   * `performSearch` if so
+   *
+   * @param {SyntheticEvent} event The event passed from the `input` element
+   * upon the function being invoked from a listener attribute, such as
+   * `onKeyUp`
+   */
+  const listenForEnter = (event) => {
+    const {
+      keyCode,
+    } = event;
+    // The key code for the enter button
+    if (keyCode === 13) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      // Trigger the button element with a click
+      performSearch();
+    }
+  };
+
+  /**
+   * Changes the active search result in `docViewer`
+   *
+   * @param {Number} newSearchResult The index to set `activeResult` to,
+   * indicating which `result` object that should be passed to
+   * `docViewer.setActiveSearchResult`
+   */
+  const changeActiveSearchResult = (newSearchResult) => {
+    /**
+     * @todo Figure out why only the middle set of search results can be
+     * iterated through, but not the first or last results.
+     */
+    /**
+     * Do not try to set a search result that is outside of the index range of
+     * searchResults
+     */
+    if (newSearchResult >= 0 && newSearchResult < searchResults.length) {
+      setActiveResultIndex(newSearchResult);
+    }
+  };
+
+>>>>>>> master
   return (
     <div className="App">
       <div>
@@ -125,6 +246,7 @@ const App = () => {
         <button onClick={selectTool}>
           <img src={Select} alt="Select"/>
         </button>
+<<<<<<< HEAD
         <button
           onClick={
             () => {
@@ -132,6 +254,26 @@ const App = () => {
               setSearchContainerOpen(prevState => !prevState);
             }
           }
+=======
+        <input
+          ref={searchTerm}
+          type={'text'}
+          placeholder={'Search'}
+          onKeyUp={listenForEnter}
+        ></input>
+        <button onClick={performSearch}>
+          <img src={Search} alt="Search"/>
+        </button>
+        <button
+          onClick={() => { changeActiveSearchResult(activeResultIndex - 1) }}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={LeftChevronArrow} alt="Previous Search Result"/>
+        </button>
+        <button
+          onClick={() => { changeActiveSearchResult(activeResultIndex + 1) }}
+          disabled={activeResultIndex < 0}
+>>>>>>> master
         >
           <img src={Search} alt="Search"/>
         </button>
