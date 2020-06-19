@@ -48,7 +48,7 @@ const App = () => {
    * Coupled with the function `changeActiveSearchResult`
    */
   useEffect(() => {
-    if (activeResultIndex >= 0) {
+    if (activeResultIndex >= 0 && activeResultIndex < searchResults.length) {
       docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
     }
   }, [ activeResultIndex ]);
