@@ -43,11 +43,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    /**
-     * @todo Add the correct `style` mutations so that `SearchContainer`
-     * renders to the right of the `div#scroll-view` element
-     */
-    /*
     if (searchContainerOpen) {
       Object.assign(
         scrollView.current.style,
@@ -79,7 +74,6 @@ const App = () => {
         );
       }
     }
-    */
   }, [ searchContainerOpen ])
 
   const zoomOut = () => {
@@ -135,15 +129,15 @@ const App = () => {
         >
           <img src={Search} alt="Search"/>
         </button>
+        <SearchContainer
+          Annotations={Annotations}
+          annotManager={annotManager}
+          docViewer={docViewer}
+          searchTermRef={searchTerm}
+          searchContainerRef={searchContainerRef}
+          open={searchContainerOpen}
+        />
       </div>
-      <SearchContainer
-        Annotations={Annotations}
-        annotManager={annotManager}
-        docViewer={docViewer}
-        searchTermRef={searchTerm}
-        searchContainerRef={searchContainerRef}
-        open={searchContainerOpen}
-      />
       <div id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
       </div>

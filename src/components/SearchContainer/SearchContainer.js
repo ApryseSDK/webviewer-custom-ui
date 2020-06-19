@@ -3,6 +3,7 @@ import ClearSearch from '../../assets/icons/ic_close_black_24px.svg'
 import LeftChevronArrow from '../../assets/icons/ic_chevron_left_black_24px.svg'
 import RightChevronArrow from '../../assets/icons/ic_chevron_right_black_24px.svg'
 import Search from '../../assets/icons/ic_search_black_24px.svg'
+import './SearchContainer.css';
 
 const SearchContainer = (props) => {
   const [searchResults, setSearchResults] = useState([]);
@@ -214,7 +215,8 @@ const SearchContainer = (props) => {
   }
 
   return (
-    <div
+    <span
+      id="search-container"
       ref={searchContainerRef}
     >
       <input
@@ -257,7 +259,7 @@ const SearchContainer = (props) => {
         />
         Whole word
       </span>
-    </div>
+    </span>
   );
 };
 
