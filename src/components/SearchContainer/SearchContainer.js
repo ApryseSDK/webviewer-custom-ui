@@ -171,14 +171,6 @@ const SearchContainer = (props) => {
     }
   };
 
-  const prevSearchResult = () => {
-    changeActiveSearchResult(activeResultIndex - 1);
-  }
-
-  const nextSearchResult = () => {
-    changeActiveSearchResult(activeResultIndex + 1);
-  }
-
   /**
    * Toggles the given `searchMode` value within `toggledSearchModes`
    *
@@ -235,13 +227,13 @@ const SearchContainer = (props) => {
         <img src={Search} alt="Search"/>
       </button>
       <button
-        onClick={prevSearchResult}
+        onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
         disabled={activeResultIndex < 0}
       >
         <img src={LeftChevronArrow} alt="Previous Search Result"/>
       </button>
       <button
-        onClick={nextSearchResult}
+        onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
         disabled={activeResultIndex < 0}
       >
         <img src={RightChevronArrow} alt="Next Search Result"/>
