@@ -228,21 +228,6 @@ const SearchContainer = (props) => {
       <button onClick={performSearch}>
         <img src={Search} alt="Search"/>
       </button>
-      <button
-        onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
-        disabled={activeResultIndex < 0}
-      >
-        <img src={LeftChevronArrow} alt="Previous Search Result"/>
-      </button>
-      <button
-        onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
-        disabled={activeResultIndex < 0}
-      >
-        <img src={RightChevronArrow} alt="Next Search Result"/>
-      </button>
-      <button onClick={clearSearchResults}>
-        <img src={ClearSearch} alt="Clear Search"/>
-      </button>
       <div>
         <span>
           <input
@@ -260,6 +245,23 @@ const SearchContainer = (props) => {
           />
           Whole word
         </span>
+      </div>
+      <div>
+        <button
+          onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={LeftChevronArrow} alt="Previous Search Result"/>
+        </button>
+        <button
+          onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={RightChevronArrow} alt="Next Search Result"/>
+        </button>
+        <button onClick={clearSearchResults}>
+          <img src={ClearSearch} alt="Clear Search"/>
+        </button>
       </div>
     </span>
   );
