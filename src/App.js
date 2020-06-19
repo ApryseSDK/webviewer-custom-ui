@@ -197,16 +197,6 @@ const App = () => {
     }
   };
 
-  const prevSearchResult = () => {
-    if (activeResultIndex !== 0) {
-      changeActiveSearchResult(activeResultIndex - 1);
-    }
-  }
-
-  const nextSearchResult = () => {
-    changeActiveSearchResult(activeResultIndex + 1);
-  }
-
   return (
     <div className="App">
       <div>
@@ -234,13 +224,13 @@ const App = () => {
           <img src={Search} alt="Search"/>
         </button>
         <button
-          onClick={prevSearchResult}
+          onClick={() => { changeActiveSearchResult(activeResultIndex - 1) }}
           disabled={activeResultIndex < 0}
         >
           <img src={LeftChevronArrow} alt="Previous Search Result"/>
         </button>
         <button
-          onClick={nextSearchResult}
+          onClick={() => { changeActiveSearchResult(activeResultIndex + 1) }}
           disabled={activeResultIndex < 0}
         >
           <img src={RightChevronArrow} alt="Next Search Result"/>
