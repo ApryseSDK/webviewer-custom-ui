@@ -42,40 +42,6 @@ const App = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (searchContainerOpen) {
-      Object.assign(
-        scrollView.current.style,
-        {
-          width: '80%',
-        },
-      );
-      if (searchContainerRef && searchContainerRef.current) {
-        Object.assign(
-          searchContainerRef.current.style,
-          {
-            width: '20%',
-          },
-        );
-      }
-    } else {
-      Object.assign(
-        scrollView.current.style,
-        {
-          width: '100%',
-        },
-      );
-      if (searchContainerRef && searchContainerRef.current) {
-        Object.assign(
-          searchContainerRef.current.style,
-          {
-            width: '0%',
-          },
-        );
-      }
-    }
-  }, [ searchContainerOpen ])
-
   const zoomOut = () => {
     docViewer.zoomTo(docViewer.getZoom() - 0.25);
   };
@@ -129,6 +95,9 @@ const App = () => {
         >
           <img src={Search} alt="Search"/>
         </button>
+      </div>
+      <div class="flexbox-container" id="scroll-view" ref={scrollView}>
+        <div id="viewer" ref={viewer}></div>
         <SearchContainer
           Annotations={Annotations}
           annotManager={annotManager}
@@ -137,9 +106,6 @@ const App = () => {
           searchContainerRef={searchContainerRef}
           open={searchContainerOpen}
         />
-      </div>
-      <div id="scroll-view" ref={scrollView}>
-        <div id="viewer" ref={viewer}></div>
       </div>
     </div>
   );
