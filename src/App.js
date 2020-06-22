@@ -71,7 +71,7 @@ const App = () => {
   return (
     <div className="App">
       <div id="main-column">
-        <div className="center">
+        <div className="center" id="tools">
           <button onClick={zoomOut}><img src={ZoomOut} alt="Zoom Out"/></button>
           <button onClick={zoomIn}><img src={ZoomIn} alt="Zoom In"/></button>
           <button onClick={createRectangle}>

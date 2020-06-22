@@ -1,6 +1,12 @@
+:root {
+  --search-background: var(--grey-2);
+  --border: var(--grey-5);
+}
+
 #search-container {
   overflow: auto;
   flex: 1;
+  background-color: var(--search-background);
 }
 
 .search-result {
