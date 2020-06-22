@@ -3,6 +3,7 @@ import ClearSearch from '../../assets/icons/ic_close_black_24px.svg'
 import LeftChevronArrow from '../../assets/icons/ic_chevron_left_black_24px.svg'
 import RightChevronArrow from '../../assets/icons/ic_chevron_right_black_24px.svg'
 import Search from '../../assets/icons/ic_search_black_24px.svg'
+import './SearchContainer.css';
 
 const SearchContainer = (props) => {
   const [searchResults, setSearchResults] = useState([]);
@@ -214,7 +215,8 @@ const SearchContainer = (props) => {
   }
 
   return (
-    <div
+    <span
+      id="search-container"
       ref={searchContainerRef}
     >
       <input
@@ -226,38 +228,42 @@ const SearchContainer = (props) => {
       <button onClick={performSearch}>
         <img src={Search} alt="Search"/>
       </button>
-      <button
-        onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
-        disabled={activeResultIndex < 0}
-      >
-        <img src={LeftChevronArrow} alt="Previous Search Result"/>
-      </button>
-      <button
-        onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
-        disabled={activeResultIndex < 0}
-      >
-        <img src={RightChevronArrow} alt="Next Search Result"/>
-      </button>
-      <button onClick={clearSearchResults}>
-        <img src={ClearSearch} alt="Clear Search"/>
-      </button>
-      <span>
-        <input
-          type="checkbox"
-          value={toggledSearchModes.includes(searchModes.eCaseSensitive)}
-          onChange={toggleCaseSensitive}
-        />
-        Case sensitive
-      </span>
-      <span>
-        <input
-          type="checkbox"
-          value={toggledSearchModes.includes(searchModes.eWholeWord)}
-          onChange={toggleWholeWord}
-        />
-        Whole word
-      </span>
-    </div>
+      <div>
+        <span>
+          <input
+            type="checkbox"
+            value={toggledSearchModes.includes(searchModes.eCaseSensitive)}
+            onChange={toggleCaseSensitive}
+          />
+          Case sensitive
+        </span>
+        <span>
+          <input
+            type="checkbox"
+            value={toggledSearchModes.includes(searchModes.eWholeWord)}
+            onChange={toggleWholeWord}
+          />
+          Whole word
+        </span>
+      </div>
+      <div>
+        <button
+          onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={LeftChevronArrow} alt="Previous Search Result"/>
+        </button>
+        <button
+          onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
+          disabled={activeResultIndex < 0}
+        >
+          <img src={RightChevronArrow} alt="Next Search Result"/>
+        </button>
+        <button onClick={clearSearchResults}>
+          <img src={ClearSearch} alt="Clear Search"/>
+        </button>
+      </div>
+    </span>
   );
 };
 
