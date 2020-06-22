@@ -96,7 +96,7 @@ const App = () => {
           <img src={Search} alt="Search"/>
         </button>
       </div>
-      <div class="flexbox-container" id="scroll-view" ref={scrollView}>
+      <div className="flexbox-container" id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
         <SearchContainer
           Annotations={Annotations}

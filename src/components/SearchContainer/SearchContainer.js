@@ -272,7 +272,7 @@ const SearchContainer = (props) => {
                 ambient_str: ambientStr,
               } = result;
               return (
-                <div key={`search-result-${idx}`} class='search-result'>
+                <div key={`search-result-${idx}`} className='search-result'>
                   {ambientStr}
                 </div>
               )
