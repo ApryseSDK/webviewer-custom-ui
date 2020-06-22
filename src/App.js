@@ -71,30 +71,32 @@ const App = () => {
   return (
     <div className="App">
       <div id="main-column">
-        <button onClick={zoomOut}><img src={ZoomOut} alt="Zoom Out"/></button>
-        <button onClick={zoomIn}><img src={ZoomIn} alt="Zoom In"/></button>
-        <button onClick={createRectangle}>
-          <img src={AnnotationRectangle} alt="Create Rectangle"/>
-        </button>
-        <button onClick={createRedaction}>
-          <img src={AnnotationRedact} alt="Create Redaction"/>
-        </button>
-        <button onClick={applyRedactions}>
-          <img src={AnnotationApplyRedact} alt="Apply Redaction"/>
-        </button>
-        <button onClick={selectTool}>
-          <img src={Select} alt="Select"/>
-        </button>
-        <button
-          onClick={
-            () => {
-              // Flip the boolean
-              setSearchContainerOpen(prevState => !prevState);
+        <div className="center">
+          <button onClick={zoomOut}><img src={ZoomOut} alt="Zoom Out"/></button>
+          <button onClick={zoomIn}><img src={ZoomIn} alt="Zoom In"/></button>
+          <button onClick={createRectangle}>
+            <img src={AnnotationRectangle} alt="Create Rectangle"/>
+          </button>
+          <button onClick={createRedaction}>
+            <img src={AnnotationRedact} alt="Create Redaction"/>
+          </button>
+          <button onClick={applyRedactions}>
+            <img src={AnnotationApplyRedact} alt="Apply Redaction"/>
+          </button>
+          <button onClick={selectTool}>
+            <img src={Select} alt="Select"/>
+          </button>
+          <button
+            onClick={
+              () => {
+                // Flip the boolean
+                setSearchContainerOpen(prevState => !prevState);
+              }
             }
-          }
-        >
-          <img src={Search} alt="Search"/>
-        </button>
+          >
+            <img src={Search} alt="Search"/>
+          </button>
+        </div>
         <div className="flexbox-container" id="scroll-view" ref={scrollView}>
           <div id="viewer" ref={viewer}></div>
         </div>
