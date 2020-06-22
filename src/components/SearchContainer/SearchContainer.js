@@ -265,6 +265,20 @@ const SearchContainer = (props) => {
         <button onClick={clearSearchResults}>
           <img src={ClearSearch} alt="Clear Search"/>
         </button>
+        <div>
+          {
+            searchResults.map((result, idx) => {
+              const {
+                ambient_str: ambientStr,
+              } = result;
+              return (
+                <div key={`search-result-${idx}`} class='search-result'>
+                  {ambientStr}
+                </div>
+              )
+            })
+          }
+        </div>
       </div>
     </span>
   );
