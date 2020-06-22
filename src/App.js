@@ -98,6 +98,8 @@ const App = () => {
       </div>
       <div className="flexbox-container" id="scroll-view" ref={scrollView}>
         <div id="viewer" ref={viewer}></div>
+      </div>
+      <div className="flexbox-container">
         <SearchContainer
           Annotations={Annotations}
           annotManager={annotManager}
