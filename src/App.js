@@ -70,7 +70,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <div>
+      <div id="main-column">
         <button onClick={zoomOut}><img src={ZoomOut} alt="Zoom Out"/></button>
         <button onClick={zoomIn}><img src={ZoomIn} alt="Zoom In"/></button>
         <button onClick={createRectangle}>
@@ -95,9 +95,9 @@ const App = () => {
         >
           <img src={Search} alt="Search"/>
         </button>
-      </div>
-      <div className="flexbox-container" id="scroll-view" ref={scrollView}>
-        <div id="viewer" ref={viewer}></div>
+        <div className="flexbox-container" id="scroll-view" ref={scrollView}>
+          <div id="viewer" ref={viewer}></div>
+        </div>
       </div>
       <div className="flexbox-container">
         <SearchContainer

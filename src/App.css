@@ -29,6 +29,11 @@
   margin: auto;
 }
 
+#main-column {
+  flex-direction: row;
+  flex: 3;
+}
+
 .pageContainer {
   border: 1px solid #ececec;
   box-shadow: 5px 10px 18px #ececec;
