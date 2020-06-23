@@ -19,6 +19,22 @@
   box-shadow: none;
 }
 
+#search-input * {
+  vertical-align: middle;
+  box-sizing: content-box;
+  height: 28px;
+  border: none;
+}
+
+#search-input input {
+  border: 1px solid var(--grey-1);
+  border-right: none;
+}
+
+#search-input button {
+  border: 1px solid var(--grey-5);
+}
+
 .search-result {
   margin: 1em;
 }

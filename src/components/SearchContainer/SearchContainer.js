@@ -222,15 +222,17 @@ const SearchContainer = (props) => {
       id="search-container"
       ref={searchContainerRef}
     >
-      <input
-        ref={searchTerm}
-        type={'text'}
-        placeholder={'Search'}
-        onKeyUp={listenForEnter}
-      />
-      <button onClick={performSearch}>
-        <img src={Search} alt="Search"/>
-      </button>
+      <div id="search-input">
+        <input
+          ref={searchTerm}
+          type={'text'}
+          placeholder={'Search'}
+          onKeyUp={listenForEnter}
+        />
+        <button onClick={performSearch}>
+          <img src={Search} alt="Search"/>
+        </button>
+      </div>
       <div>
         <span>
           <input
