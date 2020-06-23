@@ -38,5 +38,5 @@
 .search-result {
   margin: 1em;
   padding: 1em;
-  border: 1px solid var(--border)
+  border: 1px solid var(--border);
 }
