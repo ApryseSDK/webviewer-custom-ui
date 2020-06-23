@@ -44,6 +44,13 @@
   background-color: var(--tools-header-background);
 }
 
+#tools button {
+  background-color: var(--tools-header-background);
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
 .center {
   margin: auto;
   text-align: center;
