@@ -7,7 +7,7 @@
 This repo is specifically designed for any users interested in making their [own UI](https://www.pdftron.com/documentation/web/guides/core/).
 
 This sample codebase demonstrates
-  * How to leverage PDFTron's PDF renderer without an `<iFrame>`
+  * How to leverage PDFTron's document renderer without an `<iFrame>`
   * How to define custom `<button>` elements and implement functionality from the PDFTron SDK such as
     * Zoom In/Out
     * Drawing Rectangles
