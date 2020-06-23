@@ -43,6 +43,11 @@ To test the build directory locally you can use [serve](https://www.npmjs.com/pa
 
 See [API documentation](https://www.pdftron.com/documentation/web/guides/ui/apis).
 
+## Screenshots
+
+![](docs/screenshots/webivewer-custom-ui-01.png)
+![](docs/screenshots/webivewer-custom-ui-02.png)
+
 ## Contributing
 
 See [contributing](./CONTRIBUTING.md).
