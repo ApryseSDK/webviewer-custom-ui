@@ -1,5 +1,6 @@
 :root {
   --search-background: var(--grey-2);
+  --search-buttons: var(--grey-3);
   --border: var(--grey-5);
 }
 
@@ -9,6 +10,13 @@
   background-color: var(--search-background);
   padding: 1em;
   min-width: 293px;
+}
+
+#search-container button {
+  background-color: var(--search-buttons);
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .search-result {
