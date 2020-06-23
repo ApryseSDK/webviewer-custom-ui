@@ -20,6 +20,8 @@ const SearchContainer = (props) => {
     searchTermRef: searchTerm,
   } = props;
 
+  const pageRenderTracker = {};
+
   useEffect(() => {
     if (docViewer && docViewer.SearchMode) {
       const {
@@ -272,10 +274,20 @@ const SearchContainer = (props) => {
             searchResults.map((result, idx) => {
               const {
                 ambient_str: ambientStr,
+                // page_num is 0-indexed
+                page_num: pageNum,
               } = result;
+              let pageHeader = null;
+              if (!pageRenderTracker[pageNum]) {
+                pageRenderTracker[pageNum] = true;
+                pageHeader = <div>Page {pageNum + 1}</div>
+              }
               return (
-                <div key={`search-result-${idx}`} className='search-result'>
-                  {ambientStr}
+                <div>
+                  {pageHeader}
+                  <div key={`search-result-${idx}`} className='search-result'>
+                    <div>{ambientStr}</div>
+                  </div>
                 </div>
               )
             })
