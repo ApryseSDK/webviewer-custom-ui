@@ -20,6 +20,8 @@ const SearchContainer = (props) => {
     searchTermRef: searchTerm,
   } = props;
 
+  const pageRenderTracker = {};
+
   useEffect(() => {
     if (docViewer && docViewer.SearchMode) {
       const {
@@ -28,6 +30,7 @@ const SearchContainer = (props) => {
           e_highlight: eHighlight,
           e_case_sensitive: eCaseSensitive,
           e_whole_word: eWholeWord,
+          e_ambient_string: eAmbientString,
         },
       } = docViewer;
       setSearchModes({
@@ -35,6 +38,7 @@ const SearchContainer = (props) => {
         eHighlight,
         eCaseSensitive,
         eWholeWord,
+        eAmbientString,
       });
     }
   }, [ docViewer ]);
@@ -63,10 +67,11 @@ const SearchContainer = (props) => {
     const {
       ePageStop,
       eHighlight,
+      eAmbientString,
     } = searchModes;
     const mode = toggledSearchModes.reduce(
       (prev, value) => prev | value,
-      (ePageStop | eHighlight),
+      (ePageStop | eHighlight | eAmbientString),
     );
     const fullSearch = true;
     let jumped = false;
@@ -219,15 +224,17 @@ const SearchContainer = (props) => {
       id="search-container"
       ref={searchContainerRef}
     >
-      <input
-        ref={searchTerm}
-        type={'text'}
-        placeholder={'Search'}
-        onKeyUp={listenForEnter}
-      />
-      <button onClick={performSearch}>
-        <img src={Search} alt="Search"/>
-      </button>
+      <div id="search-input">
+        <input
+          ref={searchTerm}
+          type={'text'}
+          placeholder={'Search'}
+          onKeyUp={listenForEnter}
+        />
+        <button onClick={performSearch}>
+          <img src={Search} alt="Search"/>
+        </button>
+      </div>
       <div>
         <span>
           <input
@@ -246,22 +253,66 @@ const SearchContainer = (props) => {
           Whole word
         </span>
       </div>
+      <div className="divider"></div>
+      <div id='search-buttons'>
+        <span>
+          <button onClick={clearSearchResults}>
+            <img src={ClearSearch} alt="Clear Search"/>
+          </button>
+        </span>
+        <span id="search-iterators">
+          <button
+            onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
+            disabled={activeResultIndex < 0}
+          >
+            <img src={LeftChevronArrow} alt="Previous Search Result"/>
+          </button>
+          <button
+            onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
+            disabled={activeResultIndex < 0}
+          >
+            <img src={RightChevronArrow} alt="Next Search Result"/>
+          </button>
+        </span>
+      </div>
       <div>
-        <button
-          onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
-          disabled={activeResultIndex < 0}
-        >
-          <img src={LeftChevronArrow} alt="Previous Search Result"/>
-        </button>
-        <button
-          onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
-          disabled={activeResultIndex < 0}
-        >
-          <img src={RightChevronArrow} alt="Next Search Result"/>
-        </button>
-        <button onClick={clearSearchResults}>
-          <img src={ClearSearch} alt="Clear Search"/>
-        </button>
+        {
+          searchResults.map((result, idx) => {
+            const {
+              ambient_str: ambientStr,
+              // page_num is 0-indexed
+              page_num: pageNum,
+              result_str_start: resultStrStart,
+              result_str_end: resultStrEnd,
+            } = result;
+            const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
+            const searchValue = ambientStr.slice(
+              resultStrStart,
+              resultStrEnd,
+            );
+            const textAfterSearchValue = ambientStr.slice(resultStrEnd);
+            let pageHeader = null;
+            if (!pageRenderTracker[pageNum]) {
+              pageRenderTracker[pageNum] = true;
+              pageHeader = <div>Page {pageNum + 1}</div>
+            }
+            return (
+              <div key={`search-result-${idx}`} >
+                {pageHeader}
+                <div
+                  className='search-result'
+                  onClick={() => {docViewer.setActiveSearchResult(result)}}
+                >
+                  {textBeforeSearchValue}
+                  <span className="search-value">
+                    {searchValue}
+                  </span>
+                  {textAfterSearchValue}
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
     </span>
   );
