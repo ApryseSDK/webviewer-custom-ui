@@ -6,6 +6,15 @@
 
 This repo is specifically designed for any users interested in making their [own UI](https://www.pdftron.com/documentation/web/guides/core/).
 
+This sample codebase demonstrates
+  * How to leverage PDFTron's PDF renderer without an `<iFrame>`
+  * How to define custom `<button>` elements and implement functionality from the PDFTron SDK such as
+    * Zoom In/Out
+    * Drawing Rectangles
+    * Select Tool
+    * Creating and Applying Redactions
+  * How to implement searching using [DocViewer Search APIs](https://www.pdftron.com/documentation/web/guides/advance-text-search/)
+
 ## Initial setup
 
 Before you begin, make sure your development environment includes [Node.js](https://nodejs.org/en/).
