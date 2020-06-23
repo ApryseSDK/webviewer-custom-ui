@@ -253,6 +253,7 @@ const SearchContainer = (props) => {
           Whole word
         </span>
       </div>
+      <div className="divider"></div>
       <div>
         <button
           onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}

@@ -4,6 +4,7 @@
   --grey-3: #E7EBEE;
   --grey-4: #DEE2E6;
   --grey-5: #CFD4DA;
+  --divider: var(--grey-5);
 }
 
 html, body, #root {
@@ -19,4 +20,10 @@ html, body, #root {
   margin: 8px;
   -webkit-box-shadow: 1px 1px 10px #999;
           box-shadow: 1px 1px 10px #999;
+}
+
+.divider {
+  width: 100%;
+  margin: 16px 0;
+  border-top: 1px solid var(--divider);
 }
