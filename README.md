@@ -6,6 +6,15 @@
 
 This repo is specifically designed for any users interested in making their [own UI](https://www.pdftron.com/documentation/web/guides/core/).
 
+This sample codebase demonstrates
+  * How to leverage PDFTron's document renderer without an `<iFrame>`
+  * How to define custom `<button>` elements and implement functionality from the PDFTron SDK such as
+    * Zoom In/Out
+    * Drawing Rectangles
+    * Select Tool
+    * Creating and Applying Redactions
+  * How to implement searching using [DocViewer Search APIs](https://www.pdftron.com/documentation/web/guides/advance-text-search/)
+
 ## Initial setup
 
 Before you begin, make sure your development environment includes [Node.js](https://nodejs.org/en/).
@@ -33,6 +42,11 @@ To test the build directory locally you can use [serve](https://www.npmjs.com/pa
 ## WebViewer APIs
 
 See [API documentation](https://www.pdftron.com/documentation/web/guides/ui/apis).
+
+## Screenshots
+
+![](docs/screenshots/webivewer-custom-ui-01.png)
+![](docs/screenshots/webivewer-custom-ui-02.png)
 
 ## Contributing
 
