@@ -31,8 +31,26 @@
   border-right: none;
 }
 
+#search-input input:focus {
+  outline-style: solid;
+  outline-color: var(--border);
+}
+
 #search-input button {
   border: 1px solid var(--border);
+}
+
+#search-buttons {
+  display: flex;
+}
+
+#search-buttons button {
+  margin: 0.5em;
+  border: 1px solid var(--border);
+}
+
+#search-buttons > span:first-of-type {
+  flex: 1;
 }
 
 .search-result {

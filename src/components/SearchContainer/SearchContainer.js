@@ -254,22 +254,26 @@ const SearchContainer = (props) => {
         </span>
       </div>
       <div className="divider"></div>
-      <div>
-        <button
-          onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
-          disabled={activeResultIndex < 0}
-        >
-          <img src={LeftChevronArrow} alt="Previous Search Result"/>
-        </button>
-        <button
-          onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
-          disabled={activeResultIndex < 0}
-        >
-          <img src={RightChevronArrow} alt="Next Search Result"/>
-        </button>
-        <button onClick={clearSearchResults}>
-          <img src={ClearSearch} alt="Clear Search"/>
-        </button>
+      <div id='search-buttons'>
+        <span>
+          <button onClick={clearSearchResults}>
+            <img src={ClearSearch} alt="Clear Search"/>
+          </button>
+        </span>
+        <span id="search-iterators">
+          <button
+            onClick={() => { changeActiveSearchResult(activeResultIndex - 1); }}
+            disabled={activeResultIndex < 0}
+          >
+            <img src={LeftChevronArrow} alt="Previous Search Result"/>
+          </button>
+          <button
+            onClick={() => { changeActiveSearchResult(activeResultIndex + 1); }}
+            disabled={activeResultIndex < 0}
+          >
+            <img src={RightChevronArrow} alt="Next Search Result"/>
+          </button>
+        </span>
       </div>
       <div>
         {
