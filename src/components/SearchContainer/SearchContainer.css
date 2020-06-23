@@ -32,7 +32,7 @@
 }
 
 #search-input button {
-  border: 1px solid var(--grey-5);
+  border: 1px solid var(--border);
 }
 
 .search-result {
