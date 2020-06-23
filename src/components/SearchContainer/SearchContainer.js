@@ -270,45 +270,45 @@ const SearchContainer = (props) => {
         <button onClick={clearSearchResults}>
           <img src={ClearSearch} alt="Clear Search"/>
         </button>
-        <div>
-          {
-            searchResults.map((result, idx) => {
-              const {
-                ambient_str: ambientStr,
-                // page_num is 0-indexed
-                page_num: pageNum,
-                result_str_start: resultStrStart,
-                result_str_end: resultStrEnd,
-              } = result;
-              const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
-              const searchValue = ambientStr.slice(
-                resultStrStart,
-                resultStrEnd,
-              );
-              const textAfterSearchValue = ambientStr.slice(resultStrEnd);
-              let pageHeader = null;
-              if (!pageRenderTracker[pageNum]) {
-                pageRenderTracker[pageNum] = true;
-                pageHeader = <div>Page {pageNum + 1}</div>
-              }
-              return (
-                <div key={`search-result-${idx}`} >
-                  {pageHeader}
-                  <div
-                    className='search-result'
-                    onClick={() => {docViewer.setActiveSearchResult(result)}}
-                  >
-                    {textBeforeSearchValue}
-                    <span className="search-value">
-                      {searchValue}
-                    </span>
-                    {textAfterSearchValue}
-                  </div>
+      </div>
+      <div>
+        {
+          searchResults.map((result, idx) => {
+            const {
+              ambient_str: ambientStr,
+              // page_num is 0-indexed
+              page_num: pageNum,
+              result_str_start: resultStrStart,
+              result_str_end: resultStrEnd,
+            } = result;
+            const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
+            const searchValue = ambientStr.slice(
+              resultStrStart,
+              resultStrEnd,
+            );
+            const textAfterSearchValue = ambientStr.slice(resultStrEnd);
+            let pageHeader = null;
+            if (!pageRenderTracker[pageNum]) {
+              pageRenderTracker[pageNum] = true;
+              pageHeader = <div>Page {pageNum + 1}</div>
+            }
+            return (
+              <div key={`search-result-${idx}`} >
+                {pageHeader}
+                <div
+                  className='search-result'
+                  onClick={() => {docViewer.setActiveSearchResult(result)}}
+                >
+                  {textBeforeSearchValue}
+                  <span className="search-value">
+                    {searchValue}
+                  </span>
+                  {textAfterSearchValue}
                 </div>
-              )
-            })
-          }
-        </div>
+              </div>
+            )
+          })
+        }
       </div>
     </span>
   );
