@@ -285,7 +285,10 @@ const SearchContainer = (props) => {
               return (
                 <div key={`search-result-${idx}`} >
                   {pageHeader}
-                  <div className='search-result'>
+                  <div
+                    className='search-result'
+                    onClick={() => {docViewer.setActiveSearchResult(result)}}
+                  >
                     <div>{ambientStr}</div>
                   </div>
                 </div>
