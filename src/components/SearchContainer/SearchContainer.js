@@ -283,9 +283,9 @@ const SearchContainer = (props) => {
                 pageHeader = <div>Page {pageNum + 1}</div>
               }
               return (
-                <div>
+                <div key={`search-result-${idx}`} >
                   {pageHeader}
-                  <div key={`search-result-${idx}`} className='search-result'>
+                  <div className='search-result'>
                     <div>{ambientStr}</div>
                   </div>
                 </div>
