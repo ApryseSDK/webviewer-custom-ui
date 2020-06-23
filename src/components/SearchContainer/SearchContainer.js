@@ -276,7 +276,15 @@ const SearchContainer = (props) => {
                 ambient_str: ambientStr,
                 // page_num is 0-indexed
                 page_num: pageNum,
+                result_str_start: resultStrStart,
+                result_str_end: resultStrEnd,
               } = result;
+              const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
+              const searchValue = ambientStr.slice(
+                resultStrStart,
+                resultStrEnd,
+              );
+              const textAfterSearchValue = ambientStr.slice(resultStrEnd);
               let pageHeader = null;
               if (!pageRenderTracker[pageNum]) {
                 pageRenderTracker[pageNum] = true;
@@ -289,7 +297,11 @@ const SearchContainer = (props) => {
                     className='search-result'
                     onClick={() => {docViewer.setActiveSearchResult(result)}}
                   >
-                    <div>{ambientStr}</div>
+                    {textBeforeSearchValue}
+                    <span className="search-value">
+                      {searchValue}
+                    </span>
+                    {textAfterSearchValue}
                   </div>
                 </div>
               )
