@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import SearchContainer from './components/SearchContainer';
-import ZoomIn from './assets/icons/ic_zoom_in_black_24px.svg'
-import ZoomOut from './assets/icons/ic_zoom_out_black_24px.svg'
-import AnnotationRectangle from './assets/icons/ic_annotation_rectangular_area_black_24px.svg'
-import AnnotationRedact from './assets/icons/ic_annotation_add_redact_black_24px.svg'
-import AnnotationApplyRedact from './assets/icons/ic_annotation_apply_redact_black_24px.svg'
-import Search from './assets/icons/ic_search_black_24px.svg'
-import Select from './assets/icons/ic_select_black_24px.svg'
+import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.svg';
+import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
+import { ReactComponent as AnnotationRectangle } from './assets/icons/ic_annotation_square_black_24px.svg';
+import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation_add_redact_black_24px.svg';
+import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
+import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
+import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
 import './App.css';
 
 const App = () => {
@@ -34,7 +34,7 @@ const App = () => {
     docViewer.loadDocument('/files/pdftron_about.pdf');
 
     setDocViewer(docViewer);
-  
+
     docViewer.on('documentLoaded', () => {
       console.log('document loaded');
       docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
@@ -72,29 +72,31 @@ const App = () => {
     <div className="App">
       <div id="main-column">
         <div className="center" id="tools">
-          <button onClick={zoomOut}><img src={ZoomOut} alt="Zoom Out"/></button>
-          <button onClick={zoomIn}><img src={ZoomIn} alt="Zoom In"/></button>
+          <button onClick={zoomOut}>
+            <ZoomOut />
+          </button>
+          <button onClick={zoomIn}>
+            <ZoomIn />
+          </button>
           <button onClick={createRectangle}>
-            <img src={AnnotationRectangle} alt="Create Rectangle"/>
+            <AnnotationRectangle />
           </button>
           <button onClick={createRedaction}>
-            <img src={AnnotationRedact} alt="Create Redaction"/>
+            <AnnotationRedact />
           </button>
           <button onClick={applyRedactions}>
-            <img src={AnnotationApplyRedact} alt="Apply Redaction"/>
+            <AnnotationApplyRedact />
           </button>
           <button onClick={selectTool}>
-            <img src={Select} alt="Select"/>
+            <Select />
           </button>
           <button
-            onClick={
-              () => {
-                // Flip the boolean
-                setSearchContainerOpen(prevState => !prevState);
-              }
-            }
+            onClick={() => {
+              // Flip the boolean
+              setSearchContainerOpen(prevState => !prevState);
+            }}
           >
-            <img src={Search} alt="Search"/>
+            <Search />
           </button>
         </div>
         <div className="flexbox-container" id="scroll-view" ref={scrollView}>

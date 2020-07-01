@@ -42,19 +42,26 @@
 }
 
 #tools {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
   background-color: var(--tools-header-background);
 }
 
 #tools button {
   background-color: var(--tools-header-background);
+  fill: #757575;
+  width: 35px;
+  height: 35px;
+  margin: 5px;
   border: none;
   outline: none;
   box-shadow: none;
 }
 
-.center {
-  margin: auto;
-  text-align: center;
+#tools button:hover {
+  background-color: #c7d2dd;
+  border-radius: 4px;
 }
 
 .pageContainer {
