@@ -3,7 +3,7 @@
 [WebViewer](https://www.pdftron.com/webviewer) is a powerful JavaScript-based PDF Library that's part of the [PDFTron PDF SDK](https://www.pdftron.com).
 This repo is specifically designed for any users interested in making their [own UI](https://www.pdftron.com/documentation/web/guides/core/).
 
-![](docs/screenshots/webivewer-custom-ui-01.png)
+![](docs/screenshots/webviewer-custom-ui-01.png)
 
 This sample codebase demonstrates
   * How to leverage PDFTron's document renderer without an `<iFrame>`
