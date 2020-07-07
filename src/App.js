@@ -31,7 +31,7 @@ const App = () => {
     docViewer.setScrollViewElement(scrollView.current);
     docViewer.setViewerElement(viewer.current);
     docViewer.setOptions({ enableAnnotations: true });
-    docViewer.loadDocument('/files/pdftron_about.pdf');
+    docViewer.loadDocument('/files/example_document.pdf');
 
     setDocViewer(docViewer);
 
