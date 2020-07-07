@@ -39,6 +39,26 @@ const App = () => {
         const bookmarkCoordinates = bookmarkCoordinatesRef.current;
         const page = annotations[0].getPageNumber();
         const annotationYCoordinate = annotations[0].getY();
+        /**
+         * The page the annotation is made on has no bookmarks, find the last
+         * bookmark of a previous page
+         */
+        if (!Object.keys(bookmarkCoordinates[page]).length) {
+          let lastPageWithBookmark = page - 1;
+          while (!bookmarkCoordinates[lastPageWithBookmark]) {
+            lastPageWithBookmark -= 1;
+          }
+          const previousPageCoordinates = Object.keys(
+            bookmarkCoordinates[lastPageWithBookmark]
+          );
+          const lowestBookmark = bookmarkCoordinates[lastPageWithBookmark][
+            previousPageCoordinates[previousPageCoordinates.length - 1]
+          ];
+          console.log(
+            `This annotation is a child of ${lowestBookmark.getName()}`
+          );
+          return;
+        }
         // Perform a brute force search for the closest parent bookmark
         for (const [index, yCoordinate] of Object.keys(
           bookmarkCoordinates[page]
