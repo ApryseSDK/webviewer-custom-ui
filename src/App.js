@@ -18,6 +18,7 @@ const App = () => {
   const [docViewer, setDocViewer] = useState(null);
   const [annotManager, setAnnotManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
+  const [bookmarkCoordinates, setBookmarkCoordinates] = useState({});
 
   const Annotations = window.Annotations;
 
@@ -39,6 +40,46 @@ const App = () => {
       console.log('document loaded');
       docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
       setAnnotManager(docViewer.getAnnotationManager());
+      const doc = docViewer.getDocument();
+      const bookmarks = await doc.getBookmarks();
+      /**
+       * Performs a recursive traversal of the Bookmark tree, printing out the
+       * name, page number and y-coordinate of each bookmark, and stores the
+       * page number, y-coordinate relationship in an Object for later access
+       *
+       * @param {Object} storage The Object to store the page number and
+       * y-coordinate relationship in (passes by reference, per Javascript
+       * standard)
+       * @param {CoreControls.Bookmark} bookmark The current bookmark to print
+       * and store in the `storage` Object
+       * @param {Number} level The depth of the current bookmark
+       */
+      const printAndStoreBookmarkTree = (storage, bookmark, level = 0) => {
+        const pageNumber = bookmark.getPageNumber();
+        const name = bookmark.getName();
+        const yCoordinate = bookmark.getVPos();
+        const children = bookmark.getChildren();
+        const indent = '   '.repeat(level);
+        storage[pageNumber][yCoordinate] = bookmark;
+        console.log(
+          `${indent}${name} (Page: ${pageNumber}, Y: ${yCoordinate})`
+        );
+        children.map(child => printAndStoreBookmarkTree(
+          storage, child, level + 1
+        ));
+      };
+
+      const storeBookmarkCoordinates = {};
+
+      for (let i = 1; i <= doc.getPageCount(); i++) {
+        storeBookmarkCoordinates[i] = {};
+      }
+
+      bookmarks.forEach(bookmark => {
+        printAndStoreBookmarkTree(storeBookmarkCoordinates, bookmark);
+      });
+
+      setBookmarkCoordinates(storeBookmarkCoordinates);
     });
   }, []);
 
