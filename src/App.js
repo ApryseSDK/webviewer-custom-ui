@@ -146,6 +146,10 @@ const App = () => {
       const printAndStoreBookmarkTree = (storage, bookmark, level = 0) => {
         const pageNumber = bookmark.getPageNumber();
         const name = bookmark.getName();
+        /**
+         * @todo Add support for X-Coordinate
+         * const xCoordinate = bookmark.getHPos();
+         */
         const yCoordinate = bookmark.getVPos();
         const children = bookmark.getChildren();
         const indent = '   '.repeat(level);
