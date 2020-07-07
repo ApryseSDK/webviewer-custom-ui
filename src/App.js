@@ -35,7 +35,7 @@ const App = () => {
 
     setDocViewer(docViewer);
 
-    docViewer.on('documentLoaded', () => {
+    docViewer.on('documentLoaded', async () => {
       console.log('document loaded');
       docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
       setAnnotManager(docViewer.getAnnotationManager());
