@@ -18,9 +18,53 @@ const App = () => {
   const [docViewer, setDocViewer] = useState(null);
   const [annotManager, setAnnotManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
-  const [bookmarkCoordinates, setBookmarkCoordinates] = useState({});
+  /**
+   * A state value cannot be accessed in an event handler, and needs a `ref` to
+   * ensure the most current value is being accessed within the event handler
+   *
+   * https://stackoverflow.com/questions/55265255/react-usestate-hook-event-handler-using-initial-state
+   */
+  const [bookmarkCoordinates, _setBookmarkCoordinates] = useState({});
+  const bookmarkCoordinatesRef = useRef(bookmarkCoordinates);
+  const setBookmarkCoordinates = value => {
+    bookmarkCoordinatesRef.current = value;
+    _setBookmarkCoordinates(value);
+  }
 
   const Annotations = window.Annotations;
+
+  useEffect(() => {
+    if (annotManager) {
+      annotManager.on('annotationChanged', annotations => {
+        const bookmarkCoordinates = bookmarkCoordinatesRef.current;
+        const page = annotations[0].getPageNumber();
+        const annotationYCoordinate = annotations[0].getY();
+        // Perform a brute force search for the closest parent bookmark
+        for (const [index, yCoordinate] of Object.keys(
+          bookmarkCoordinates[page]
+        ).entries()) {
+          const bookmarkName = bookmarkCoordinates[page][yCoordinate].getName();
+          if (
+            /**
+             * Guard clause ensuring the logic does not attempt to access an
+             * index beyond the length of the array
+             */
+            Object.keys(bookmarkCoordinates[page]).length - 1 === index
+            || (
+              // Ensure the reported bookmark is the closest parent
+              annotationYCoordinate >= yCoordinate
+              && annotationYCoordinate < Object.keys(bookmarkCoordinates[page])[
+                index + 1
+              ]
+            )
+          ) {
+            console.log(`This annotation is a child of ${bookmarkName}`);
+            break;
+          }
+        }
+      });
+    }
+  }, [ annotManager ]);
 
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
