@@ -44,13 +44,38 @@ const App = () => {
           bookmarkCoordinates[page]
         ).entries()) {
           const bookmarkName = bookmarkCoordinates[page][yCoordinate].getName();
+          /**
+           * Account for an annotation that is above the first bookmark of a
+           * page
+           */
           if (
+            index === 0
+            // Don't attempt to access a previous page on the first page
+            && page > 1
+            && annotationYCoordinate < yCoordinate
+          ) {
+            const previousPageCoordinates = Object.keys(
+              bookmarkCoordinates[page - 1]
+            );
+            const lowestBookmark = bookmarkCoordinates[page - 1][
+              previousPageCoordinates[previousPageCoordinates.length - 1]
+            ];
+            console.log(
+              `This annotation is a child of ${lowestBookmark.getName()}`
+            );
+            break;
+          } else if (
             /**
              * Guard clause ensuring the logic does not attempt to access an
              * index beyond the length of the array
+             *
+             * Also account for an annotation that is drawn above the first
+             * bookmark of the page
              */
-            Object.keys(bookmarkCoordinates[page]).length - 1 === index
-            || (
+            (
+              Object.keys(bookmarkCoordinates[page]).length - 1 === index
+              && annotationYCoordinate > Object.keys(bookmarkCoordinates[page])[0]
+            ) || (
               // Ensure the reported bookmark is the closest parent
               annotationYCoordinate >= yCoordinate
               && annotationYCoordinate < Object.keys(bookmarkCoordinates[page])[
