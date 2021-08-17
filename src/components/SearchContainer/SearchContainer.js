@@ -82,13 +82,11 @@ const SearchContainer = (props) => {
         const {
           resultCode,
           quads,
-          // The page number in the callback parameter is 0-indexed
-          page_num: zeroIndexedPageNum,
+          page_num: pageNumber,
         } = result;
         const {
           e_found: eFound,
         } = window.PDFNet.TextSearch.ResultCode
-        const pageNumber = zeroIndexedPageNum + 1;
         if (resultCode === eFound) {
           const highlight = new Annotations.TextHighlightAnnotation();
           /**
@@ -280,7 +278,6 @@ const SearchContainer = (props) => {
           searchResults.map((result, idx) => {
             const {
               ambient_str: ambientStr,
-              // page_num is 0-indexed
               page_num: pageNum,
               result_str_start: resultStrStart,
               result_str_end: resultStrEnd,
@@ -294,7 +291,7 @@ const SearchContainer = (props) => {
             let pageHeader = null;
             if (!pageRenderTracker[pageNum]) {
               pageRenderTracker[pageNum] = true;
-              pageHeader = <div>Page {pageNum + 1}</div>
+              pageHeader = <div>Page {pageNum}</div>
             }
             return (
               <div key={`search-result-${idx}`} >
