@@ -15,57 +15,57 @@ const App = () => {
   const searchTerm = useRef(null);
   const searchContainerRef = useRef(null);
 
-  const [docViewer, setDocViewer] = useState(null);
-  const [annotManager, setAnnotManager] = useState(null);
+  const [documentViewer, setDocumentViewer] = useState(null);
+  const [annotationManager, setAnnotationManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
 
-  const Annotations = window.Annotations;
+  const Annotations = window.Core.Annotations;
 
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
-    const CoreControls = window.CoreControls;
-    CoreControls.setWorkerPath('/webviewer');
-    CoreControls.enableFullPDF(true);
+    const Core = window.Core;
+    Core.setWorkerPath('/webviewer');
+    Core.enableFullPDF();
 
-    const docViewer = new CoreControls.DocumentViewer();
-    docViewer.setScrollViewElement(scrollView.current);
-    docViewer.setViewerElement(viewer.current);
-    docViewer.setOptions({ enableAnnotations: true });
-    docViewer.loadDocument('/files/pdftron_about.pdf');
+    const documentViewer = new Core.DocumentViewer();
+    documentViewer.setScrollViewElement(scrollView.current);
+    documentViewer.setViewerElement(viewer.current);
+    documentViewer.setOptions({ enableAnnotations: true });
+    documentViewer.loadDocument('/files/pdftron_about.pdf');
 
-    setDocViewer(docViewer);
+    setDocumentViewer(documentViewer);
 
-    docViewer.on('documentLoaded', () => {
+    documentViewer.addEventListener('documentLoaded', () => {
       console.log('document loaded');
-      docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
-      setAnnotManager(docViewer.getAnnotationManager());
+      documentViewer.setToolMode(documentViewer.getTool(Core.Tools.ToolNames.EDIT));
+      setAnnotationManager(documentViewer.getAnnotationManager());
     });
   }, []);
 
   const zoomOut = () => {
-    docViewer.zoomTo(docViewer.getZoom() - 0.25);
+    documentViewer.zoomTo(documentViewer.getZoom() - 0.25);
   };
 
   const zoomIn = () => {
-    docViewer.zoomTo(docViewer.getZoom() + 0.25);
+    documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
   };
 
   const createRectangle = () => {
-    docViewer.setToolMode(docViewer.getTool('AnnotationCreateRectangle'));
+    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.RECTANGLE));
   };
 
   const selectTool = () => {
-    docViewer.setToolMode(docViewer.getTool('AnnotationEdit'));
+    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
   };
 
   const createRedaction = () => {
-    docViewer.setToolMode(docViewer.getTool('AnnotationCreateRedaction'));
+    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.REDACTION));
   };
 
   const applyRedactions = async () => {
-    const annotManager = docViewer.getAnnotationManager();
-    annotManager.enableRedaction(true);
-    await annotManager.applyRedactions();
+    const annotationManager = documentViewer.getAnnotationManager();
+    annotationManager.enableRedaction();
+    await annotationManager.applyRedactions();
   };
 
   return (
@@ -106,8 +106,8 @@ const App = () => {
       <div className="flexbox-container">
         <SearchContainer
           Annotations={Annotations}
-          annotManager={annotManager}
-          docViewer={docViewer}
+          annotationManager={annotationManager}
+          documentViewer={documentViewer}
           searchTermRef={searchTerm}
           searchContainerRef={searchContainerRef}
           open={searchContainerOpen}

@@ -9,12 +9,11 @@ const SearchContainer = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [activeResultIndex, setActiveResultIndex] = useState(-1);
   const [toggledSearchModes, setToggledSearchModes] = useState([]);
-  const [searchModes, setSearchModes] = useState({});
 
   const {
     Annotations,
-    annotManager,
-    docViewer,
+    annotationManager,
+    documentViewer,
     open = false,
     searchContainerRef,
     searchTermRef: searchTerm,
@@ -22,38 +21,17 @@ const SearchContainer = (props) => {
 
   const pageRenderTracker = {};
 
-  useEffect(() => {
-    if (docViewer && docViewer.SearchMode) {
-      const {
-        SearchMode: {
-          e_page_stop: ePageStop,
-          e_highlight: eHighlight,
-          e_case_sensitive: eCaseSensitive,
-          e_whole_word: eWholeWord,
-          e_ambient_string: eAmbientString,
-        },
-      } = docViewer;
-      setSearchModes({
-        ePageStop,
-        eHighlight,
-        eCaseSensitive,
-        eWholeWord,
-        eAmbientString,
-      });
-    }
-  }, [ docViewer ]);
-
   /**
    * Coupled with the function `changeActiveSearchResult`
    */
   useEffect(() => {
     if (activeResultIndex >= 0 && activeResultIndex < searchResults.length) {
-      docViewer.setActiveSearchResult(searchResults[activeResultIndex]);
+      documentViewer.setActiveSearchResult(searchResults[activeResultIndex]);
     }
   }, [ activeResultIndex ]);
 
   /**
-   * Side-effect function that invokes `docViewer.textSearchInit`, and stores
+   * Side-effect function that invokes `documentViewer.textSearchInit`, and stores
    * every result in the state Array `searchResults`, and jumps the user to the
    * first result is found.
    */
@@ -64,18 +42,20 @@ const SearchContainer = (props) => {
         value: textToSearch
       }
     } = searchTerm;
+
     const {
-      ePageStop,
-      eHighlight,
-      eAmbientString,
-    } = searchModes;
+      PAGE_STOP,
+      HIGHLIGHT,
+      AMBIENT_STRING
+    } = window.Core.Search.Mode;
+
     const mode = toggledSearchModes.reduce(
       (prev, value) => prev | value,
-      (ePageStop | eHighlight | eAmbientString),
+      (PAGE_STOP | HIGHLIGHT | AMBIENT_STRING),
     );
     const fullSearch = true;
     let jumped = false;
-    docViewer.textSearchInit(textToSearch, mode, {
+    documentViewer.textSearchInit(textToSearch, mode, {
       fullSearch,
       onResult: result => {
         setSearchResults(prevState => [...prevState, result]);
@@ -95,18 +75,18 @@ const SearchContainer = (props) => {
            */
           highlight.setPageNumber(pageNumber);
           highlight.Quads.push(quads[0].getPoints());
-          annotManager.addAnnotation(highlight);
-          annotManager.drawAnnotations(highlight.PageNumber);
+          annotationManager.addAnnotation(highlight);
+          annotationManager.drawAnnotations(highlight.PageNumber);
           if (!jumped) {
             jumped = true;
             // This is the first result found, so set `activeResult` accordingly
             setActiveResultIndex(0);
-            docViewer.displaySearchResult(result, () => {
+            documentViewer.displaySearchResult(result, () => {
               /**
-               * The page number in docViewer.displayPageLocation is not
+               * The page number in documentViewer.displayPageLocation is not
                * 0-indexed
                */
-              docViewer.displayPageLocation(pageNumber, 0, 0, true);
+              documentViewer.displayPageLocation(pageNumber, 0, 0, true);
             });
           }
         }
@@ -127,8 +107,8 @@ const SearchContainer = (props) => {
     if (clearSearchTermValue) {
       searchTerm.current.value = '';
     }
-    docViewer.clearSearchResults();
-    annotManager.deleteAnnotations(annotManager.getAnnotationsList());
+    documentViewer.clearSearchResults();
+    annotationManager.deleteAnnotations(annotationManager.getAnnotationsList());
     setSearchResults([]);
     setActiveResultIndex(-1);
   };
@@ -155,11 +135,11 @@ const SearchContainer = (props) => {
   };
 
   /**
-   * Changes the active search result in `docViewer`
+   * Changes the active search result in `documentViewer`
    *
    * @param {Number} newSearchResult The index to set `activeResult` to,
    * indicating which `result` object that should be passed to
-   * `docViewer.setActiveSearchResult`
+   * `documentViewer.setActiveSearchResult`
    */
   const changeActiveSearchResult = (newSearchResult) => {
     /**
@@ -196,10 +176,7 @@ const SearchContainer = (props) => {
    * with case sensitivty
    */
   const toggleCaseSensitive = () => {
-    const {
-      eCaseSensitive,
-    } = searchModes;
-    toggleSearchMode(eCaseSensitive);
+    toggleSearchMode(window.Core.Search.Mode.CASE_SENSITIVE);
   }
 
   /**
@@ -207,10 +184,7 @@ const SearchContainer = (props) => {
    * that finds the whole word
    */
   const toggleWholeWord = () => {
-    const {
-      eWholeWord,
-    } = searchModes;
-    toggleSearchMode(eWholeWord);
+    toggleSearchMode(window.Core.Search.Mode.WHOLE_WORD);
   }
 
   if (!open) {
@@ -237,7 +211,7 @@ const SearchContainer = (props) => {
         <span>
           <input
             type="checkbox"
-            value={toggledSearchModes.includes(searchModes.eCaseSensitive)}
+            value={toggledSearchModes.includes(window.Core.Search.Mode.CASE_SENSITIVE)}
             onChange={toggleCaseSensitive}
           />
           Case sensitive
@@ -245,7 +219,7 @@ const SearchContainer = (props) => {
         <span>
           <input
             type="checkbox"
-            value={toggledSearchModes.includes(searchModes.eWholeWord)}
+            value={toggledSearchModes.includes(window.Core.Search.Mode.WHOLE_WORD)}
             onChange={toggleWholeWord}
           />
           Whole word
@@ -298,7 +272,7 @@ const SearchContainer = (props) => {
                 {pageHeader}
                 <div
                   className='search-result'
-                  onClick={() => {docViewer.setActiveSearchResult(result)}}
+                  onClick={() => {documentViewer.setActiveSearchResult(result)}}
                 >
                   {textBeforeSearchValue}
                   <span className="search-value">
