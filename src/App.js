@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import ReactQuill from 'react-quill';
+import Modal from 'simple-react-modal';
 import SearchContainer from './components/SearchContainer';
 import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.svg';
 import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
@@ -7,7 +9,9 @@ import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation
 import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
+import { ReactComponent as EditContent } from './assets/icons/ic_edit_black_24px.svg';
 import './App.css';
+import 'react-quill/dist/quill.snow.css';
 
 const App = () => {
   const viewer = useRef(null);
@@ -18,6 +22,9 @@ const App = () => {
   const [documentViewer, setDocumentViewer] = useState(null);
   const [annotationManager, setAnnotationManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
+
+  const [editBoxId, setEditBoxId] = useState(null);
+  const [editBoxCurrentValue, setEditBoxCurrentValue] = useState(null);
 
   const Annotations = window.Core.Annotations;
 
@@ -32,6 +39,12 @@ const App = () => {
     documentViewer.setViewerElement(viewer.current);
     documentViewer.setOptions({ enableAnnotations: true });
     documentViewer.loadDocument('/files/pdftron_about.pdf');
+
+    const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
+    contentEditTool.addEventListener('contentBoxSelected', (data) => {
+      setEditBoxId(data.id);
+      setEditBoxCurrentValue(data.content);
+    });
 
     setDocumentViewer(documentViewer);
 
@@ -48,6 +61,12 @@ const App = () => {
 
   const zoomIn = () => {
     documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
+  };
+
+  const editContent = () => {
+    const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
+    documentViewer.setToolMode(contentEditTool);
+    contentEditTool.startEditing();
   };
 
   const createRectangle = () => {
@@ -68,6 +87,23 @@ const App = () => {
     await annotationManager.applyRedactions();
   };
 
+  const richTextEditorChangeHandler = (value) => {
+    setEditBoxCurrentValue(value);
+  };
+
+  const applyEditModal = () => {
+    window.Core.updateContentBox({
+      content: editBoxCurrentValue,
+      id: editBoxId,
+      pageNumber: documentViewer.getCurrentPage()
+    });
+
+    setEditBoxId(null);
+    setEditBoxCurrentValue(null);
+  };
+
+  const toolbarOptions = [['bold', 'italic', 'underline']];
+
   return (
     <div className="App">
       <div id="main-column">
@@ -77,6 +113,9 @@ const App = () => {
           </button>
           <button onClick={zoomIn}>
             <ZoomIn />
+          </button>
+          <button onClick={editContent}>
+            <EditContent />
           </button>
           <button onClick={createRectangle}>
             <AnnotationRectangle />
@@ -99,6 +138,16 @@ const App = () => {
             <Search />
           </button>
         </div>
+        <Modal show={!!editBoxCurrentValue} style={{ background: 'rgba(0, 0, 0, 0.2)' }}>
+          <ReactQuill
+            value={editBoxCurrentValue}
+            onChange={richTextEditorChangeHandler}
+            modules={{ toolbar: toolbarOptions }}
+          />
+          <button onClick={applyEditModal}>
+            Apply
+          </button>
+        </Modal>
         <div className="flexbox-container" id="scroll-view" ref={scrollView}>
           <div id="viewer" ref={viewer}></div>
         </div>
