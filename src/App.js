@@ -40,12 +40,6 @@ const App = () => {
     documentViewer.setOptions({ enableAnnotations: true });
     documentViewer.loadDocument('/files/pdftron_about.pdf');
 
-    const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
-    contentEditTool.addEventListener('contentBoxSelected', (data) => {
-      setEditBoxId(data.id);
-      setEditBoxCurrentValue(data.content);
-    });
-
     setDocumentViewer(documentViewer);
 
     documentViewer.addEventListener('documentLoaded', () => {
@@ -63,7 +57,7 @@ const App = () => {
     documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
   };
 
-  const editContent = () => {
+  const startEditingContent = () => {
     const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
     documentViewer.setToolMode(contentEditTool);
     contentEditTool.startEditing();
@@ -92,7 +86,7 @@ const App = () => {
   };
 
   const applyEditModal = () => {
-    window.Core.updateContentBox({
+    window.Core.ContentEdit.updateContentBox({
       content: editBoxCurrentValue,
       id: editBoxId,
       pageNumber: documentViewer.getCurrentPage()
@@ -100,6 +94,17 @@ const App = () => {
 
     setEditBoxId(null);
     setEditBoxCurrentValue(null);
+  };
+
+  const editSelectedBox = async () => {
+    const selectedAnnotations = documentViewer.getAnnotationManager().getSelectedAnnotations();
+    const selectedAnnotation = selectedAnnotations[0];
+
+    if (selectedAnnotation && selectedAnnotation.isContentEditPlaceholder()) {
+      const { id, content } = await window.Core.ContentEdit.getContentBoxData(selectedAnnotation);
+      setEditBoxId(id);
+      setEditBoxCurrentValue(content);
+    }
   };
 
   const toolbarOptions = [['bold', 'italic', 'underline']];
@@ -114,8 +119,11 @@ const App = () => {
           <button onClick={zoomIn}>
             <ZoomIn />
           </button>
-          <button onClick={editContent}>
+          <button onClick={startEditingContent}>
             <EditContent />
+          </button>
+          <button onClick={editSelectedBox}>
+            Edit Box
           </button>
           <button onClick={createRectangle}>
             <AnnotationRectangle />
