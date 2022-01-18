@@ -23,7 +23,7 @@ const App = () => {
   const [annotationManager, setAnnotationManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
 
-  const [editBoxId, setEditBoxId] = useState(null);
+  const [editBoxAnnotation, setEditBoxAnnotation] = useState(null);
   const [editBoxCurrentValue, setEditBoxCurrentValue] = useState(null);
 
   const Annotations = window.Core.Annotations;
@@ -60,7 +60,6 @@ const App = () => {
   const startEditingContent = () => {
     const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
     documentViewer.setToolMode(contentEditTool);
-    contentEditTool.startEditing();
   };
 
   const createRectangle = () => {
@@ -86,13 +85,9 @@ const App = () => {
   };
 
   const applyEditModal = () => {
-    window.Core.ContentEdit.updateContentBox({
-      content: editBoxCurrentValue,
-      id: editBoxId,
-      pageNumber: documentViewer.getCurrentPage()
-    });
+    window.Core.ContentEdit.updateDocumentContent(editBoxAnnotation, editBoxCurrentValue);
 
-    setEditBoxId(null);
+    setEditBoxAnnotation(null);
     setEditBoxCurrentValue(null);
   };
 
@@ -100,9 +95,11 @@ const App = () => {
     const selectedAnnotations = documentViewer.getAnnotationManager().getSelectedAnnotations();
     const selectedAnnotation = selectedAnnotations[0];
 
-    if (selectedAnnotation && selectedAnnotation.isContentEditPlaceholder()) {
-      const { id, content } = await window.Core.ContentEdit.getContentBoxData(selectedAnnotation);
-      setEditBoxId(id);
+    if (selectedAnnotation &&
+      selectedAnnotation.isContentEditPlaceholder() &&
+      selectedAnnotation.getContentEditType() === window.Core.ContentEdit.Types.TEXT) {
+      const content = await window.Core.ContentEdit.getDocumentContent(selectedAnnotation);
+      setEditBoxAnnotation(selectedAnnotation);
       setEditBoxCurrentValue(content);
     }
   };
