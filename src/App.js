@@ -9,7 +9,7 @@ import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation
 import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
-import { ReactComponent as EditContent } from './assets/icons/ic_edit_black_24px.svg';
+import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
 import './App.css';
 import 'react-quill/dist/quill.snow.css';
 
@@ -116,10 +116,10 @@ const App = () => {
           <button onClick={zoomIn}>
             <ZoomIn />
           </button>
-          <button onClick={startEditingContent}>
+          <button onClick={startEditingContent} title="Switch to edit mode">
             <EditContent />
           </button>
-          <button onClick={editSelectedBox}>
+          <button onClick={editSelectedBox} title="Edit selected box">
             Edit Box
           </button>
           <button onClick={createRectangle}>
