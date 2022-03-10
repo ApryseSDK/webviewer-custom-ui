@@ -101,6 +101,8 @@ const App = () => {
       const content = await window.Core.ContentEdit.getDocumentContent(selectedAnnotation);
       setEditBoxAnnotation(selectedAnnotation);
       setEditBoxCurrentValue(content);
+    } else {
+      alert('Text edit box is not selected');
     }
   };
 
