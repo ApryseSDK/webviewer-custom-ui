@@ -9,7 +9,7 @@ import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation
 import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
-import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
+import { ReactComponent as AddParagraph } from './assets/icons/ic_paragraph_24px.svg';
 import './App.css';
 import 'react-quill/dist/quill.snow.css';
 
@@ -57,9 +57,9 @@ const App = () => {
     documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
   };
 
-  const startEditingContent = () => {
-    const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
-    documentViewer.setToolMode(contentEditTool);
+  const addParagraph = () => {
+    const addParagraphTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_PARAGRAPH);
+    documentViewer.setToolMode(addParagraphTool);
   };
 
   const createRectangle = () => {
@@ -118,8 +118,8 @@ const App = () => {
           <button onClick={zoomIn}>
             <ZoomIn />
           </button>
-          <button onClick={startEditingContent} title="Switch to edit mode">
-            <EditContent />
+          <button onClick={addParagraph} title="Add new paragraph">
+            <AddParagraph />
           </button>
           <button onClick={editSelectedBox} title="Edit selected box">
             Edit Box
