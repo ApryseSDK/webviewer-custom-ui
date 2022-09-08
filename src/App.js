@@ -9,7 +9,9 @@ import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation
 import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
+import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
 import { ReactComponent as AddParagraph } from './assets/icons/ic_paragraph_24px.svg';
+import { ReactComponent as AddImageContent } from './assets/icons/ic_add_image_24px.svg';
 import './App.css';
 import 'react-quill/dist/quill.snow.css';
 
@@ -25,6 +27,7 @@ const App = () => {
 
   const [editBoxAnnotation, setEditBoxAnnotation] = useState(null);
   const [editBoxCurrentValue, setEditBoxCurrentValue] = useState(null);
+  const [isInContentEditMode, setIsInContentEditMode] = useState(false);
 
   const Annotations = window.Core.Annotations;
 
@@ -57,9 +60,34 @@ const App = () => {
     documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
   };
 
+  const startEditingContent = () => {
+    const contentEditManager = documentViewer.getContentEditManager();
+    contentEditManager.startContentEditMode();
+    setIsInContentEditMode(true);
+  }
+
+  const endEditingContent = () => {
+    const contentEditManager = documentViewer.getContentEditManager();
+    contentEditManager.endContentEditMode();
+    setIsInContentEditMode(false);
+  }
+
   const addParagraph = () => {
-    const addParagraphTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_PARAGRAPH);
-    documentViewer.setToolMode(addParagraphTool);
+    if (isInContentEditMode) {
+      const addParagraphTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_PARAGRAPH);
+      documentViewer.setToolMode(addParagraphTool);
+    } else {
+      alert('Content Edit mode is not enable.')
+    }
+  };
+
+  const addImageContent = () => {
+    if (isInContentEditMode) {
+      const addImageContentTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_IMAGE_CONTENT);
+      documentViewer.setToolMode(addImageContentTool);
+    } else {
+      alert('Content Edit mode is not enable.')
+    }
   };
 
   const createRectangle = () => {
@@ -118,19 +146,28 @@ const App = () => {
           <button onClick={zoomIn}>
             <ZoomIn />
           </button>
-          <button onClick={addParagraph} title="Add new paragraph">
-            <AddParagraph />
+          <button onClick={startEditingContent} title="Switch to edit mode">
+            <EditContent />
           </button>
           <button onClick={editSelectedBox} title="Edit selected box">
             Edit Box
           </button>
+          <button onClick={addParagraph} title="Add new paragraph">
+            <AddParagraph />
+          </button>
+          <button onClick={addImageContent} title="Add new content image">
+            <AddImageContent />
+          </button>
+          <button onClick={endEditingContent} title="End editx mode">
+            Finish Editing
+          </button>
           <button onClick={createRectangle}>
             <AnnotationRectangle />
           </button>
-          <button onClick={createRedaction}>
+          <button onClick={createRedaction}  title="Create Redactions">
             <AnnotationRedact />
           </button>
-          <button onClick={applyRedactions}>
+          <button onClick={applyRedactions} title="Apply Redactions">
             <AnnotationApplyRedact />
           </button>
           <button onClick={selectTool}>
