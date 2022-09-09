@@ -67,9 +67,10 @@ const App = () => {
   }
 
   const endEditingContent = () => {
+    setIsInContentEditMode(false);
+    documentViewer.setToolMode(window.Core.Tools.ToolNames.EDIT)
     const contentEditManager = documentViewer.getContentEditManager();
     contentEditManager.endContentEditMode();
-    setIsInContentEditMode(false);
   }
 
   const addParagraph = () => {
@@ -77,7 +78,7 @@ const App = () => {
       const addParagraphTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_PARAGRAPH);
       documentViewer.setToolMode(addParagraphTool);
     } else {
-      alert('Content Edit mode is not enable.')
+      alert('Content Edit mode is not enabled.')
     }
   };
 
@@ -86,7 +87,7 @@ const App = () => {
       const addImageContentTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_IMAGE_CONTENT);
       documentViewer.setToolMode(addImageContentTool);
     } else {
-      alert('Content Edit mode is not enable.')
+      alert('Content Edit mode is not enabled.')
     }
   };
 
@@ -119,21 +120,6 @@ const App = () => {
     setEditBoxCurrentValue(null);
   };
 
-  const editSelectedBox = async () => {
-    const selectedAnnotations = documentViewer.getAnnotationManager().getSelectedAnnotations();
-    const selectedAnnotation = selectedAnnotations[0];
-
-    if (selectedAnnotation &&
-      selectedAnnotation.isContentEditPlaceholder() &&
-      selectedAnnotation.getContentEditType() === window.Core.ContentEdit.Types.TEXT) {
-      const content = await window.Core.ContentEdit.getDocumentContent(selectedAnnotation);
-      setEditBoxAnnotation(selectedAnnotation);
-      setEditBoxCurrentValue(content);
-    } else {
-      alert('Text edit box is not selected');
-    }
-  };
-
   const toolbarOptions = [['bold', 'italic', 'underline']];
 
   return (
@@ -149,16 +135,13 @@ const App = () => {
           <button onClick={startEditingContent} title="Switch to edit mode">
             <EditContent />
           </button>
-          <button onClick={editSelectedBox} title="Edit selected box">
-            Edit Box
-          </button>
           <button onClick={addParagraph} title="Add new paragraph">
             <AddParagraph />
           </button>
           <button onClick={addImageContent} title="Add new content image">
             <AddImageContent />
           </button>
-          <button onClick={endEditingContent} title="End editx mode">
+          <button onClick={endEditingContent} title="End edit mode">
             Finish Editing
           </button>
           <button onClick={createRectangle}>
