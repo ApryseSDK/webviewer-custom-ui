@@ -147,7 +147,7 @@ const App = () => {
           <button onClick={createRectangle}>
             <AnnotationRectangle />
           </button>
-          <button onClick={createRedaction}  title="Create Redactions">
+          <button onClick={createRedaction} title="Create Redaction">
             <AnnotationRedact />
           </button>
           <button onClick={applyRedactions} title="Apply Redactions">
