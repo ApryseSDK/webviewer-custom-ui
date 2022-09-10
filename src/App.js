@@ -1,6 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
-import Modal from 'simple-react-modal';
 import SearchContainer from './components/SearchContainer';
 import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.svg';
 import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
@@ -13,7 +11,6 @@ import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.
 import { ReactComponent as AddParagraph } from './assets/icons/ic_paragraph_24px.svg';
 import { ReactComponent as AddImageContent } from './assets/icons/ic_add_image_24px.svg';
 import './App.css';
-import 'react-quill/dist/quill.snow.css';
 
 const App = () => {
   const viewer = useRef(null);
@@ -24,9 +21,6 @@ const App = () => {
   const [documentViewer, setDocumentViewer] = useState(null);
   const [annotationManager, setAnnotationManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
-
-  const [editBoxAnnotation, setEditBoxAnnotation] = useState(null);
-  const [editBoxCurrentValue, setEditBoxCurrentValue] = useState(null);
   const [isInContentEditMode, setIsInContentEditMode] = useState(false);
 
   const Annotations = window.Core.Annotations;
@@ -68,7 +62,7 @@ const App = () => {
 
   const endEditingContent = () => {
     setIsInContentEditMode(false);
-    documentViewer.setToolMode(window.Core.Tools.ToolNames.EDIT)
+    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
     const contentEditManager = documentViewer.getContentEditManager();
     contentEditManager.endContentEditMode();
   }
@@ -108,19 +102,6 @@ const App = () => {
     annotationManager.enableRedaction();
     await annotationManager.applyRedactions();
   };
-
-  const richTextEditorChangeHandler = (value) => {
-    setEditBoxCurrentValue(value);
-  };
-
-  const applyEditModal = () => {
-    window.Core.ContentEdit.updateDocumentContent(editBoxAnnotation, editBoxCurrentValue);
-
-    setEditBoxAnnotation(null);
-    setEditBoxCurrentValue(null);
-  };
-
-  const toolbarOptions = [['bold', 'italic', 'underline']];
 
   return (
     <div className="App">
@@ -165,16 +146,6 @@ const App = () => {
             <Search />
           </button>
         </div>
-        <Modal show={!!editBoxCurrentValue} style={{ background: 'rgba(0, 0, 0, 0.2)' }}>
-          <ReactQuill
-            value={editBoxCurrentValue}
-            onChange={richTextEditorChangeHandler}
-            modules={{ toolbar: toolbarOptions }}
-          />
-          <button onClick={applyEditModal}>
-            Apply
-          </button>
-        </Modal>
         <div className="flexbox-container" id="scroll-view" ref={scrollView}>
           <div id="viewer" ref={viewer}></div>
         </div>
