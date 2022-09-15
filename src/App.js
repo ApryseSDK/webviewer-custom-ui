@@ -1,6 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
-import Modal from 'simple-react-modal';
 import SearchContainer from './components/SearchContainer';
 import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.svg';
 import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
@@ -10,8 +8,9 @@ import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annota
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
 import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
+import { ReactComponent as AddParagraph } from './assets/icons/ic_paragraph_24px.svg';
+import { ReactComponent as AddImageContent } from './assets/icons/ic_add_image_24px.svg';
 import './App.css';
-import 'react-quill/dist/quill.snow.css';
 
 const App = () => {
   const viewer = useRef(null);
@@ -22,9 +21,7 @@ const App = () => {
   const [documentViewer, setDocumentViewer] = useState(null);
   const [annotationManager, setAnnotationManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
-
-  const [editBoxAnnotation, setEditBoxAnnotation] = useState(null);
-  const [editBoxCurrentValue, setEditBoxCurrentValue] = useState(null);
+  const [isInContentEditMode, setIsInContentEditMode] = useState(false);
 
   const Annotations = window.Core.Annotations;
 
@@ -58,8 +55,34 @@ const App = () => {
   };
 
   const startEditingContent = () => {
-    const contentEditTool = documentViewer.getTool(window.Core.Tools.ToolNames.CONTENT_EDIT);
-    documentViewer.setToolMode(contentEditTool);
+    const contentEditManager = documentViewer.getContentEditManager();
+    contentEditManager.startContentEditMode();
+    setIsInContentEditMode(true);
+  }
+
+  const endEditingContent = () => {
+    setIsInContentEditMode(false);
+    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
+    const contentEditManager = documentViewer.getContentEditManager();
+    contentEditManager.endContentEditMode();
+  }
+
+  const addParagraph = () => {
+    if (isInContentEditMode) {
+      const addParagraphTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_PARAGRAPH);
+      documentViewer.setToolMode(addParagraphTool);
+    } else {
+      alert('Content Edit mode is not enabled.')
+    }
+  };
+
+  const addImageContent = () => {
+    if (isInContentEditMode) {
+      const addImageContentTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_IMAGE_CONTENT);
+      documentViewer.setToolMode(addImageContentTool);
+    } else {
+      alert('Content Edit mode is not enabled.')
+    }
   };
 
   const createRectangle = () => {
@@ -80,34 +103,6 @@ const App = () => {
     await annotationManager.applyRedactions();
   };
 
-  const richTextEditorChangeHandler = (value) => {
-    setEditBoxCurrentValue(value);
-  };
-
-  const applyEditModal = () => {
-    window.Core.ContentEdit.updateDocumentContent(editBoxAnnotation, editBoxCurrentValue);
-
-    setEditBoxAnnotation(null);
-    setEditBoxCurrentValue(null);
-  };
-
-  const editSelectedBox = async () => {
-    const selectedAnnotations = documentViewer.getAnnotationManager().getSelectedAnnotations();
-    const selectedAnnotation = selectedAnnotations[0];
-
-    if (selectedAnnotation &&
-      selectedAnnotation.isContentEditPlaceholder() &&
-      selectedAnnotation.getContentEditType() === window.Core.ContentEdit.Types.TEXT) {
-      const content = await window.Core.ContentEdit.getDocumentContent(selectedAnnotation);
-      setEditBoxAnnotation(selectedAnnotation);
-      setEditBoxCurrentValue(content);
-    } else {
-      alert('Text edit box is not selected');
-    }
-  };
-
-  const toolbarOptions = [['bold', 'italic', 'underline']];
-
   return (
     <div className="App">
       <div id="main-column">
@@ -121,16 +116,22 @@ const App = () => {
           <button onClick={startEditingContent} title="Switch to edit mode">
             <EditContent />
           </button>
-          <button onClick={editSelectedBox} title="Edit selected box">
-            Edit Box
+          <button onClick={addParagraph} title="Add new paragraph">
+            <AddParagraph />
+          </button>
+          <button onClick={addImageContent} title="Add new content image">
+            <AddImageContent />
+          </button>
+          <button onClick={endEditingContent} title="End edit mode">
+            Finish Editing
           </button>
           <button onClick={createRectangle}>
             <AnnotationRectangle />
           </button>
-          <button onClick={createRedaction}>
+          <button onClick={createRedaction} title="Create Redaction">
             <AnnotationRedact />
           </button>
-          <button onClick={applyRedactions}>
+          <button onClick={applyRedactions} title="Apply Redactions">
             <AnnotationApplyRedact />
           </button>
           <button onClick={selectTool}>
@@ -145,16 +146,6 @@ const App = () => {
             <Search />
           </button>
         </div>
-        <Modal show={!!editBoxCurrentValue} style={{ background: 'rgba(0, 0, 0, 0.2)' }}>
-          <ReactQuill
-            value={editBoxCurrentValue}
-            onChange={richTextEditorChangeHandler}
-            modules={{ toolbar: toolbarOptions }}
-          />
-          <button onClick={applyEditModal}>
-            Apply
-          </button>
-        </Modal>
         <div className="flexbox-container" id="scroll-view" ref={scrollView}>
           <div id="viewer" ref={viewer}></div>
         </div>
