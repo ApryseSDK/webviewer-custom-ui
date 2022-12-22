@@ -4,7 +4,7 @@ import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.s
 import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
 import { ReactComponent as AnnotationRectangle } from './assets/icons/ic_annotation_square_black_24px.svg';
 import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation_add_redact_black_24px.svg';
-import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
+import { ReactComponent as AnnotationApplyRedact } from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
 import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
@@ -55,14 +55,33 @@ const App = () => {
     documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
   };
 
+  const prevPage = () => {
+    if (documentViewer.getCurrentPage() - 1 > 0) {
+      documentViewer.setCurrentPage(
+        Math.max(documentViewer.getCurrentPage() - 1, 1)
+      );
+    }
+  };
+
+  const nextPage = () => {
+    if (documentViewer.getCurrentPage() + 1 <= documentViewer.getPageCount()) {
+      documentViewer.setCurrentPage(
+        Math.min(documentViewer.getCurrentPage() + 1, documentViewer.getPageCount())
+      );
+    }
+  };
+
   const selectTool = () => {
-    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
+    documentViewer.setToolMode(
+      documentViewer.getTool(window.Core.Tools.ToolNames.EDIT)
+    );
   };
 
   return (
-    <div className="App">
-      <div id="main-column">
-        <div className="center" id="tools">
+    <div className='App'>
+      <button onClick={prevPage}>Prev</button>
+      <div id='main-column'>
+        <div className='center' id='tools'>
           <button onClick={zoomOut}>
             <ZoomOut />
           </button>
@@ -75,17 +94,18 @@ const App = () => {
           <button
             onClick={() => {
               // Flip the boolean
-              setSearchContainerOpen(prevState => !prevState);
+              setSearchContainerOpen((prevState) => !prevState);
             }}
           >
             <Search />
           </button>
         </div>
-        <div className="flexbox-container" id="scroll-view" ref={scrollView}>
-          <div id="viewer" ref={viewer}></div>
+        <div className='flexbox-container' id='scroll-view' ref={scrollView}>
+          <div id='viewer' ref={viewer}></div>
         </div>
       </div>
-      <div className="flexbox-container">
+      <button onClick={nextPage}>Next</button>
+      <div className='flexbox-container'>
         <SearchContainer
           Annotations={Annotations}
           annotationManager={annotationManager}
