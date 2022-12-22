@@ -42,8 +42,8 @@ const App = () => {
     documentViewer.addEventListener('documentLoaded', () => {
       console.log('document loaded');
       setAnnotationManager(documentViewer.getAnnotationManager());
-      documentViewer.setFitMode(Core.DocumentViewer.FitMode.FitWidth);
-      documentViewer.setLayoutMode(Core.DocumentViewer.LayoutMode.Single);
+      documentViewer.setFitMode(documentViewer.FitMode.FitWidth);
+      documentViewer.setLayoutMode(documentViewer.LayoutMode.Single);
     });
   }, []);
 
