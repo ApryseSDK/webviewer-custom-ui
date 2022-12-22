@@ -41,8 +41,9 @@ const App = () => {
 
     documentViewer.addEventListener('documentLoaded', () => {
       console.log('document loaded');
-      documentViewer.setToolMode(documentViewer.getTool(Core.Tools.ToolNames.EDIT));
       setAnnotationManager(documentViewer.getAnnotationManager());
+      documentViewer.setFitMode(Core.DocumentViewer.FitMode.FitWidth);
+      documentViewer.setLayoutMode(Core.DocumentViewer.LayoutMode.Single);
     });
   }, []);
 
@@ -54,53 +55,8 @@ const App = () => {
     documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
   };
 
-  const startEditingContent = () => {
-    const contentEditManager = documentViewer.getContentEditManager();
-    contentEditManager.startContentEditMode();
-    setIsInContentEditMode(true);
-  }
-
-  const endEditingContent = () => {
-    setIsInContentEditMode(false);
-    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
-    const contentEditManager = documentViewer.getContentEditManager();
-    contentEditManager.endContentEditMode();
-  }
-
-  const addParagraph = () => {
-    if (isInContentEditMode) {
-      const addParagraphTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_PARAGRAPH);
-      documentViewer.setToolMode(addParagraphTool);
-    } else {
-      alert('Content Edit mode is not enabled.')
-    }
-  };
-
-  const addImageContent = () => {
-    if (isInContentEditMode) {
-      const addImageContentTool = documentViewer.getTool(window.Core.Tools.ToolNames.ADD_IMAGE_CONTENT);
-      documentViewer.setToolMode(addImageContentTool);
-    } else {
-      alert('Content Edit mode is not enabled.')
-    }
-  };
-
-  const createRectangle = () => {
-    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.RECTANGLE));
-  };
-
   const selectTool = () => {
     documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
-  };
-
-  const createRedaction = () => {
-    documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.REDACTION));
-  };
-
-  const applyRedactions = async () => {
-    const annotationManager = documentViewer.getAnnotationManager();
-    annotationManager.enableRedaction();
-    await annotationManager.applyRedactions();
   };
 
   return (
@@ -112,27 +68,6 @@ const App = () => {
           </button>
           <button onClick={zoomIn}>
             <ZoomIn />
-          </button>
-          <button onClick={startEditingContent} title="Switch to edit mode">
-            <EditContent />
-          </button>
-          <button onClick={addParagraph} title="Add new paragraph">
-            <AddParagraph />
-          </button>
-          <button onClick={addImageContent} title="Add new content image">
-            <AddImageContent />
-          </button>
-          <button onClick={endEditingContent} title="End edit mode">
-            Finish Editing
-          </button>
-          <button onClick={createRectangle}>
-            <AnnotationRectangle />
-          </button>
-          <button onClick={createRedaction} title="Create Redaction">
-            <AnnotationRedact />
-          </button>
-          <button onClick={applyRedactions} title="Apply Redactions">
-            <AnnotationApplyRedact />
           </button>
           <button onClick={selectTool}>
             <Select />
