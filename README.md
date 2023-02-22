@@ -1,3 +1,6 @@
+# DocumentViewer bug showcase
+This repository is a fork of [webviewer-custom-ui](https://github.com/PDFTron/webviewer-custom-ui) to reproduce bugs.
+
 # WebViewer - Custom UI
 
 [WebViewer](https://www.pdftron.com/documentation/web/) is a powerful JavaScript-based PDF Library that's part of the [PDFTron PDF SDK](https://www.pdftron.com).
