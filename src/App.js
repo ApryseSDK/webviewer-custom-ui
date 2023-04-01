@@ -34,8 +34,8 @@ const App = () => {
     const documentViewer = new Core.DocumentViewer();
     documentViewer.setScrollViewElement(scrollView.current);
     documentViewer.setViewerElement(viewer.current);
-    documentViewer.setOptions({ enableAnnotations: true });
-    documentViewer.loadDocument('/files/pdftron_about.pdf');
+    documentViewer.enableAnnotations();
+    documentViewer.loadDocument('/files/demo.pdf');
 
     setDocumentViewer(documentViewer);
 
