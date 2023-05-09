@@ -47,11 +47,11 @@ const App = () => {
   }, []);
 
   const zoomOut = () => {
-    documentViewer.zoomTo(documentViewer.getZoom() - 0.25);
+    documentViewer.zoomTo(documentViewer.getZoomLevel() - 0.25);
   };
 
   const zoomIn = () => {
-    documentViewer.zoomTo(documentViewer.getZoom() + 0.25);
+    documentViewer.zoomTo(documentViewer.getZoomLevel() + 0.25);
   };
 
   const startEditingContent = () => {
@@ -105,7 +105,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <div id="main-column">
+      <div id="main-column" style={{position: "absolute", right:0}}>
         <div className="center" id="tools">
           <button onClick={zoomOut}>
             <ZoomOut />
