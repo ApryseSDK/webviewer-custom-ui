@@ -105,7 +105,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <div id="main-column" style={{position: "absolute", right:0}}>
+      <div id="main-column">
         <div className="center" id="tools">
           <button onClick={zoomOut}>
             <ZoomOut />
