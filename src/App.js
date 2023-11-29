@@ -4,7 +4,7 @@ import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.s
 import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
 import { ReactComponent as AnnotationRectangle } from './assets/icons/ic_annotation_square_black_24px.svg';
 import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation_add_redact_black_24px.svg';
-import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
+import { ReactComponent as AnnotationApplyRedact } from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
 import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
@@ -34,7 +34,7 @@ const App = () => {
     const documentViewer = new Core.DocumentViewer();
     documentViewer.setScrollViewElement(scrollView.current);
     documentViewer.setViewerElement(viewer.current);
-    documentViewer.setOptions({ enableAnnotations: true });
+    //documentViewer.setOptions({ enableAnnotations: true });
     documentViewer.loadDocument('/files/pdftron_about.pdf');
 
     setDocumentViewer(documentViewer);
