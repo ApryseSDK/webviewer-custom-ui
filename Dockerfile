@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 # Install curl, bash, and dependencies for building Node.js
 RUN apt-get update && apt-get install -y curl bash build-essential
 
-# Install NVM and Node.js using the given command
+# Install NVM and Node.js with proper cache key prefix
 RUN --mount=type=cache,id=node_modules_cache,target=/root/.cache \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
     export NVM_DIR="$HOME/.nvm" && \
