@@ -1,6 +1,6 @@
 :root {
-  --pdf-background: var(--grey-2);
-  --tools-header-background: var(--grey-3);
+  --pdf-background: white;
+  --tools-header-background: white;
 }
 
 .App {
@@ -16,7 +16,7 @@
   height: 100px;
   padding: 8px 8px 8px 16px;
   box-sizing: border-box;
-  background: #00a5e4;
+
   font-size: 1.2em;
   line-height: 44px;
   color: white;
@@ -28,7 +28,7 @@
   height: 100%;
   width: 100%;
   overflow: auto;
-  flex: 3;
+  flex: 1;
   background-color: var(--pdf-background);
 }
 
@@ -37,23 +37,30 @@
 }
 
 #main-column {
+  display: flex;
   flex-direction: row;
-  flex: 3;
+  flex: 1;
 }
 
 #tools {
   display:flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: top;
   background-color: var(--tools-header-background);
+  height:fit-content;
+  width:auto;
+  margin: 10px;
+  padding: 20px 0px 20px 0px;
+  box-shadow: 0px 0px 5px 5px var(--grey-1);
+  border-radius: 8px;
 }
 
 #tools button {
   background-color: var(--tools-header-background);
   fill: #757575;
   width: fit-content;
-  height: 35px;
-  margin: 5px;
+  height: fit-content;
+  padding: 5px 10px 5px 10px;
   border: none;
   outline: none;
   box-shadow: none;
@@ -61,16 +68,24 @@
 }
 
 #tools button:hover {
-  background-color: #c7d2dd;
-  border-radius: 4px;
+  background-color: #F5F4F4;
+  border-radius: 0px;
 }
 
 .pageContainer {
   border: 1px solid #ececec;
-  box-shadow: 5px 10px 18px #ececec;
+ /* box-shadow: 5px 10px 18px #ececec;*/
   position: relative;
 }
 
 .flexbox-container {
   display: flex;
 }
+
+#divider{
+  background-color: var(--grey-2);
+  width: 100%;
+  height: 3px;
+  margin: 4px 0px 4px 0px;
+}
+

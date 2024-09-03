@@ -2,14 +2,18 @@ import React, { useRef, useEffect, useState } from 'react';
 import SearchContainer from './components/SearchContainer';
 import { ReactComponent as ZoomIn } from './assets/icons/ic_zoom_in_black_24px.svg';
 import { ReactComponent as ZoomOut } from './assets/icons/ic_zoom_out_black_24px.svg';
-import { ReactComponent as AnnotationRectangle } from './assets/icons/ic_annotation_square_black_24px.svg';
-import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation_add_redact_black_24px.svg';
-import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
+//import { ReactComponent as AnnotationRectangle } from './assets/icons/ic_annotation_square_black_24px.svg';
+//import { ReactComponent as AnnotationRedact } from './assets/icons/ic_annotation_add_redact_black_24px.svg';
+//import { ReactComponent as AnnotationApplyRedact} from './assets/icons/ic_annotation_apply_redact_black_24px.svg';
 import { ReactComponent as Search } from './assets/icons/ic_search_black_24px.svg';
 import { ReactComponent as Select } from './assets/icons/ic_select_black_24px.svg';
-import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
-import { ReactComponent as AddParagraph } from './assets/icons/ic_paragraph_24px.svg';
-import { ReactComponent as AddImageContent } from './assets/icons/ic_add_image_24px.svg';
+import { ReactComponent as Bookmark } from './assets/icons/ic_bookmark_32px.svg';
+import { ReactComponent as Highlight } from './assets/icons/ic_highlight_32px.svg';
+import { ReactComponent as Notes } from './assets/icons/ic_notes_32px.svg';
+//import { ReactComponent as AppLogo } from './assets/logo_32px.png';
+//import { ReactComponent as EditContent } from './assets/icons/ic_edit_page_24px.svg';
+//import { ReactComponent as AddParagraph } from './assets/icons/ic_paragraph_24px.svg';
+//import { ReactComponent as AddImageContent } from './assets/icons/ic_add_image_24px.svg';
 import './App.css';
 
 const App = () => {
@@ -18,10 +22,13 @@ const App = () => {
   const searchTerm = useRef(null);
   const searchContainerRef = useRef(null);
 
+  const itemselected = null;
+
   const [documentViewer, setDocumentViewer] = useState(null);
   const [annotationManager, setAnnotationManager] = useState(null);
   const [searchContainerOpen, setSearchContainerOpen] = useState(false);
-  const [isInContentEditMode, setIsInContentEditMode] = useState(false);
+  //const [isInContentEditMode, setIsInContentEditMode] = useState(false);
+
 
   const Annotations = window.Core.Annotations;
 
@@ -54,6 +61,8 @@ const App = () => {
     documentViewer.zoomTo(documentViewer.getZoomLevel() + 0.25);
   };
 
+  
+/*
   const startEditingContent = () => {
     const contentEditManager = documentViewer.getContentEditManager();
     contentEditManager.startContentEditMode();
@@ -88,11 +97,12 @@ const App = () => {
   const createRectangle = () => {
     documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.RECTANGLE));
   };
-
+*/
   const selectTool = () => {
     documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.EDIT));
   };
-
+  
+/*
   const createRedaction = () => {
     documentViewer.setToolMode(documentViewer.getTool(window.Core.Tools.ToolNames.REDACTION));
   };
@@ -101,42 +111,43 @@ const App = () => {
     const annotationManager = documentViewer.getAnnotationManager();
     annotationManager.enableRedaction();
     await annotationManager.applyRedactions();
+  };*/
+  
+  const addHighlight = async() =>{
+    
+    const tool = documentViewer.getTool(window.Core.Tools.ToolNames.HIGHLIGHT);
+    documentViewer.setToolMode(tool);
+    tool.enableImmediateActionOnAnnotationSelection();
+    
   };
+
+  const addNotes = async() =>{
+    
+    const tool = documentViewer.getTool(window.Core.Tools.ToolNames.NOTE);
+    documentViewer.setToolMode(tool);
+    tool.enableImmediateActionOnAnnotationSelection();
+    
+  };
+
+  const routechange = () => {
+    window.open('https://margine-app.bubbleapps.io/version-test',"_blank");
+  }
 
   return (
     <div className="App">
       <div id="main-column">
         <div className="center" id="tools">
+          <button onClick={routechange}>
+            <img src="https://9881619006547fcb5a889f60b99d2ce7.cdn.bubble.io/f1722758218678x135363893465957570/32x32.png"></img>
+          </button>
+        <div id='divider'></div>
           <button onClick={zoomOut}>
             <ZoomOut />
           </button>
           <button onClick={zoomIn}>
             <ZoomIn />
-          </button>
-          <button onClick={startEditingContent} title="Switch to edit mode">
-            <EditContent />
-          </button>
-          <button onClick={addParagraph} title="Add new paragraph">
-            <AddParagraph />
-          </button>
-          <button onClick={addImageContent} title="Add new content image">
-            <AddImageContent />
-          </button>
-          <button onClick={endEditingContent} title="End edit mode">
-            Finish Editing
-          </button>
-          <button onClick={createRectangle}>
-            <AnnotationRectangle />
-          </button>
-          <button onClick={createRedaction} title="Create Redaction">
-            <AnnotationRedact />
-          </button>
-          <button onClick={applyRedactions} title="Apply Redactions">
-            <AnnotationApplyRedact />
-          </button>
-          <button onClick={selectTool}>
-            <Select />
-          </button>
+          </button> 
+          <div id='divider'></div>
           <button
             onClick={() => {
               // Flip the boolean
@@ -145,6 +156,20 @@ const App = () => {
           >
             <Search />
           </button>
+          <button onClick={zoomIn}>
+            <Bookmark />
+          </button>
+          <button onClick={addHighlight}>
+            <Highlight />
+          </button>
+          <button onClick={addNotes}>
+            <Notes />
+          </button>
+         
+          <button onClick={selectTool}>
+            <Select />
+          </button>
+
         </div>
         <div className="flexbox-container" id="scroll-view" ref={scrollView}>
           <div id="viewer" ref={viewer}></div>

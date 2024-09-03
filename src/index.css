@@ -1,10 +1,11 @@
 :root {
-  --grey-1: #F8F9FA;
-  --grey-2: #F1F3F5;
+  --grey-1: #69758610;
+  --grey-2: #A8A8A810;
   --grey-3: #E7EBEE;
   --grey-4: #DEE2E6;
   --grey-5: #CFD4DA;
-  --divider: var(--grey-5);
+  --icon: #161B1C;
+  --divider: var(--grey-2);
 }
 
 html, body, #root {
