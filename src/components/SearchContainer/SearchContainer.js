@@ -28,7 +28,7 @@ const SearchContainer = (props) => {
     if (activeResultIndex >= 0 && activeResultIndex < searchResults.length) {
       documentViewer.setActiveSearchResult(searchResults[activeResultIndex]);
     }
-  }, [ activeResultIndex ]);
+  }, [ activeResultIndex, searchResults, documentViewer ]);
 
   /**
    * Side-effect function that invokes `documentViewer.textSearchInit`, and stores
@@ -66,7 +66,7 @@ const SearchContainer = (props) => {
         } = result;
         const {
           e_found: eFound,
-        } = window.PDFNet.TextSearch.ResultCode
+        } = window.Core.PDFNet.TextSearch.ResultCode
         if (resultCode === eFound) {
           const highlight = new Annotations.TextHighlightAnnotation();
           /**
